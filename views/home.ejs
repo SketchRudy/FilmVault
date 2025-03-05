@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film vault</title>
+    <title>Film Vault</title>
+    <link rel="stylesheet" href="/styles/home.css">
 </head>
 <body>
-    <h1>Beginning of something great</h1>
+    <header>
+        <h1>🎬 Film Vault</h1>
+        <p>Manage your favorite movies in one place</p>
+    </header>
+
+    <main>
+        <section class="movie-add">
+            <h2>Add New Movie</h2>
+            <form action="/addMovie" method="POST">
+                <input type="text" placeholder="Movie Title" name="title" required>
+                <input type="text" placeholder="Director" name="director" required>
+                <input type="number" placeholder="Year Released" name="year" required>
+                <button type="submit">Add Movie</button>
+            </form>
+        </section>
+
+        <section class="movie-list">
+            <h2>Your Movie Collection</h2>
+            <ul>
+                <li>No movies added yet.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Film Vault</p>
+    </footer>
 </body>
 </html>
