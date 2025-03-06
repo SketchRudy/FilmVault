@@ -23,46 +23,62 @@ main {
     padding: 20px;
 }
 
-section {
-    background-color: #1f1f1f;
+.search-section {
     margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 8px;
+    text-align: center;
 }
 
-.movie-add form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.movie-add input {
-    padding: 8px;
+.search-section input {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
     border-radius: 5px;
     border: none;
 }
 
-.movie-add button {
-    padding: 10px;
+.add-movie-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.add-movie-section button {
+    padding: 10px 20px;
     background-color: #e50914;
     border: none;
     color: #ffffff;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
 }
 
-.movie-add button:hover {
-    background-color: #f6121d;
+.add-movie-section button:hover {
+    background-color: #ff3d3d;
+}
+
+.movie-list {
+    margin-top: 20px;
 }
 
 .movie-list ul {
-    list-style: none;
-    padding-left: 0;
+    list-style-type: none;
+    padding: 0;
+}
+
+.movie-list li {
+    background-color: #1f1f1f;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 footer {
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     font-size: 14px;
     color: #888;
+    margin-top: 30px;
+}
+
+header {
+    border-bottom: 4px solid #e50914;
 }

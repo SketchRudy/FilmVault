@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Vault</title>
     <link rel="stylesheet" href="/styles/home.css">
 </head>
@@ -13,20 +12,19 @@
     </header>
 
     <main>
-        <section class="movie-add">
-            <h2>Add New Movie</h2>
-            <form action="/addMovie" method="POST">
-                <input type="text" placeholder="Movie Title" name="title" required>
-                <input type="text" placeholder="Director" name="director" required>
-                <input type="number" placeholder="Year Released" name="year" required>
-                <button type="submit">Add Movie</button>
-            </form>
+        <section class="search-section">
+            <input type="text" placeholder="Search movies..." />
+        </section>
+
+        <section class="add-movie-section">
+            <a href="/addMovie"><button>Add Movie</button></a>
         </section>
 
         <section class="movie-list">
-            <h2>Your Movie Collection</h2>
+            <h2>Your Movies</h2>
             <ul>
                 <li>No movies added yet.</li>
+                <!-- Movies from SQL will go here -->
             </ul>
         </section>
     </main>
