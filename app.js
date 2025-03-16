@@ -25,21 +25,23 @@ const app = express();
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
-const PORT = 3000;
+const PORT = 7000;
 app.get('/', (req,res) => {
     res.render('home');
 });
 app.get('/addMovie', (req,res) => {
     res.render('addMovie');
 });
-app.post('/addedMovie', async(req,res) => {
+app.post('/submit-movie', async(req,res) => {
     const newMovie = {
         title: req.body.title,
         director: req.body.director,
-        year: req.body.year
+        genre: req.body.genre,
+        year: req.body.year,
+        comments: req.body.comments
     }
-    const connection = await connect();
-    const movies = await connection.query(`INSERT INTO movieLog (title,director,year) VALUES ("${newMovie.title}","${newMovie.director}",${newMovie.year});`);
+    // const connection = await connect();
+    // const movies = await connection.query(`INSERT INTO movieLog (title,director,genre,year,comments) VALUES ("${newMovie.title}","${newMovie.director}","${newMovie.genre}",${newMovie.year},"${newMovie.comments}");`);
     console.log(newMovie);
     res.render('home');
 });

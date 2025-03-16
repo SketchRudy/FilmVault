@@ -17,5 +17,13 @@
     "express": "^4.21.2",
     "mariadb": "^3.4.0",
     "nodemon": "^3.1.9"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SketchRudy/FilmVault.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SketchRudy/FilmVault/issues"
+  },
+  "homepage": "https://github.com/SketchRudy/FilmVault#readme"
 }
