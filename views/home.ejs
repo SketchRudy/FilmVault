@@ -21,10 +21,16 @@
         </section>
 
         <section class="movie-list">
-            <h2>Your Movies</h2>
+            <h1>Your Movies</h1>
             <ul>
-                <li>No movies added yet.</li>
-                <!-- Movies from SQL will go here -->
+                <% for (let i = 0; i < movies.length; i++) { %>
+                    <div class="movie-entry">
+                        <h2> <%= [movies[i].title]%> - <%= [movies[i].year] %></h2>
+                        <h3> <%= [movies[i].director] %></h3>
+                        <hr>
+                        <p> <%= [movies[i].comments] %></p>
+                    </div>
+                <%     } %>
             </ul>
         </section>
     </main>
