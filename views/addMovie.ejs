@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Vault</title>
     <link rel="stylesheet" href="/styles/addMovie.css">
 </head>
+
 <body>
     <header>
         <h1>🎬 Film Vault</h1>
@@ -15,10 +17,24 @@
     <main>
         <section class="movie-add">
             <h2>Add New Movie</h2>
-            <form action="/addMovie" method="GET">
+            <form action="/submit-movie" method="post">
                 <input type="text" placeholder="Movie Title" name="title" required>
                 <input type="text" placeholder="Director" name="director" required>
+                <select name="genre">
+                    <option value="none" disabled selected>Genre</option>
+                    <option value="action">Action</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="animation">Animation</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="drama">Drama</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="horror">Horror</option>
+                    <option value="romance">Romance</option>
+                    <option value="science-fiction">Science Fiction</option>
+                    <option value="thriller">Thriller</option>
+                </select>
                 <input type="number" placeholder="Year Released" name="year" required>
+                <textarea name="comments" placeholder="Add Comments"></textarea>
                 <button type="submit">Add Movie</button>
             </form>
         </section>
@@ -31,7 +47,8 @@
         </section>
     </main>
 
-    <footer>    
+    <footer>
     </footer>
 </body>
+
 </html>

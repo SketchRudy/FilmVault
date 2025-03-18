@@ -42,6 +42,24 @@ section {
     border: none;
 }
 
+.movie-add select {
+    padding: 7px 7px 7px 4px;
+    border-radius: 5px;
+    border: none;
+    color: grey;
+}
+
+.movie-add option {
+    color: #121212;
+}
+
+.movie-add textarea {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+}
+
 .movie-add button {
     padding: 10px;
     background-color: #e50914;

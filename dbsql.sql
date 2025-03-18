@@ -1,12 +1,26 @@
 -- CREATE DATABASE filmvault;
-USE filmvault;
-SELECT * FROM movieLog;
+-- USE filmvault;
+
+-- validate if
+-- username is unique
+-- password meets requirements
+-- CREATE TABLE users (
+-- 	userID INT auto_increment,
+--     username VARCHAR(255),
+--     password VARCHAR(255),
+--     
+--     PRIMARY KEY (userID)
+-- );
+
+-- validate if
+-- year is valid
 -- CREATE TABLE movieLog (
--- 	movieLogID INT auto_increment,
+-- 	movielogID INT auto_increment,
 --     title VARCHAR(255),
 --     director VARCHAR(255),
---     year INT(4),
---     entryDate DATETIME,
---     
---     PRIMARY KEY (movieLogID)
+--     genre VARCHAR(255),
+--     year INT,
+--     comments TEXT,
+    
+--     PRIMARY KEY (movielogID)
 -- );

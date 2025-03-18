@@ -63,12 +63,11 @@ main {
     padding: 0;
 }
 
-.movie-list li {
+.movie-entry {
     background-color: #1f1f1f;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    text-align: center;
 }
 
 footer {
