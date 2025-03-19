@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const pool = mariadb.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    host: process.env.DB_HOST_LOCAL,
+    user: process.env.DB_USER_LOCAL,
+    password: process.env.DB_PASSWORD_LOCAL,
+    database: process.env.DB_DATABASE_LOCAL
 });
 
 async function connect() {
@@ -29,7 +29,9 @@ const PORT = 7000;
 app.get('/', async(req,res) => {
     const connection = await connect();
     const movies = await connection.query(`SELECT * FROM movieLog;`);
-    res.render('home',{movies});
+    res.render('home',{ movies, search: '' }); // Define search as an empty string so it won't throw an error visiting home page
+    connection.release();
+
 });
 app.get('/addMovie', (req,res) => {
     res.render('addMovie');
@@ -43,11 +45,29 @@ app.post('/submit-movie', async(req,res) => {
         comments: req.body.comments
     }
     const connection = await connect();
-    const addmovie = await connection.query(`INSERT INTO movieLog (title,director,genre,year,comments) VALUES ("${newMovie.title}","${newMovie.director}","${newMovie.genre}",${newMovie.year},"${newMovie.comments}");`);
+    
+    await connection.query(
+        `INSERT INTO movieLog (title, director, genre, year, comments)
+         VALUES (?, ?, ?, ?, ?)`,
+        [newMovie.title, newMovie.director, newMovie.genre, newMovie.year, newMovie.comments]
+    );    
+    connection.release();
+
     console.log(newMovie);
-    const movies = await connection.query(`SELECT * FROM movieLog;`);
-    res.render('home', {movies});
+    res.redirect('/');
 });
+
+app.get('/search', async (req,res) => {
+    const search = req.query.search || '';
+    const connection = await connect();
+    const movies = await connection.query(
+        `SELECT * FROM movieLog WHERE LOWER(title) LIKE LOWER(?)`,
+        [`%${search}%`] // will match any title containing the search term within it
+      );
+      res.render('home', { movies, search });
+      connection.release();
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
