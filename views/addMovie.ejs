@@ -10,11 +10,15 @@
 
 <body>
     <header>
-        <h1>🎬 Film Vault</h1>
+        <h1><a href="/">🎬 Film Vault</a></h1>
         <p>Manage your favorite movies in one place</p>
     </header>
 
-    <main>
+    <main>  
+        <section class="back-button-section">
+            <a href="/" class="button button-back">Back</a>
+        </section>
+
         <section class="movie-add">
             <h2>Add New Movie</h2>
             <form action="/submit-movie" method="post">
@@ -37,13 +41,6 @@
                 <textarea name="comments" placeholder="Add Comments"></textarea>
                 <button type="submit">Add Movie</button>
             </form>
-        </section>
-
-        <section class="movie-list">
-            <h2>Your Movie Collection</h2>
-            <ul>
-                <li>No movies added yet.</li>
-            </ul>
         </section>
     </main>
 

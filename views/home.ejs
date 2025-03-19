@@ -7,13 +7,31 @@
 </head>
 <body>
     <header>
-        <h1>🎬 Film Vault</h1>
+        <h1><a href="/">🎬 Film Vault</a></h1>
         <p>Manage your favorite movies in one place</p>
     </header>
 
+    <% 
+
+      const groupedMovies = {};
+
+      movies.forEach(movie => {
+        if (!groupedMovies[movie.genre]) {
+          groupedMovies[movie.genre] = [];
+        }
+        groupedMovies[movie.genre].push(movie);
+      });
+    %>
+
     <main>
         <section class="search-section">
-            <input type="text" placeholder="Search movies..." />
+            <form action="/search" method="GET">
+                <input type="text" name="search" placeholder="Search movies..." value="<%= search %>" />
+                <button type="submit" class="button button-search">Search</button>
+                <% if (search && search.trim()) { %>
+                    <a href="/" class="button button-clear">Clear Search</a>
+                <% } %>
+            </form>
         </section>
 
         <section class="add-movie-section">
@@ -22,18 +40,26 @@
 
         <section class="movie-list">
             <h1>Your Movies</h1>
-            <ul>
-                <% for (let i = 0; i < movies.length; i++) { %>
-                    <div class="movie-entry">
-                        <h2> <%= [movies[i].title]%> - <%= [movies[i].year] %></h2>
-                        <h3> <%= [movies[i].director] %></h3>
-                        <hr>
-                        <p> <%= [movies[i].comments] %></p>
-                    </div>
-                <%     } %>
-            </ul>
+
+            <% for (let genre in groupedMovies) { %>
+              <div class="genre-section">
+                <h2>
+                  <%= genre %>
+                </h2>
+                
+                <% groupedMovies[genre].forEach(movie => { %>
+                  <div class="movie-entry">
+                    <h3><%= movie.title %> - <%= movie.year %></h3>
+                    <h4><%= movie.director %></h4>
+                    <hr>
+                    <p><%= movie.comments %></p>
+                  </div>
+                <% }) %>
+              </div>
+            <% } %>
         </section>
     </main>
+
 
     <footer>
     </footer>
