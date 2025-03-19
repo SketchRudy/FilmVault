@@ -17,6 +17,17 @@ header h1 {
     margin-bottom: 5px;
 }
 
+header h1 a {
+    text-decoration: none;
+    color: inherit; 
+  }
+  
+header h1 a:hover {
+    text-decoration: underline;
+}
+
+
+
 main {
     max-width: 800px;
     margin: 0 auto;
@@ -58,6 +69,34 @@ section {
     padding: 7px;
     border-radius: 5px;
     border: none;
+}
+
+.back-button-section {
+    background: none;  
+    padding: 8px 11px;  
+    margin: 0;       
+    text-align: left;  
+}
+
+
+.button-back {
+    display: inline-block;
+    padding: 4px 10px;         
+    font-size: 0.9rem;        
+    text-decoration: none;    
+    color: #e50914;     
+    background-color: transparent;
+    border: 1px solid #e50914; 
+    border-radius: 4px;      
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 5px 0;        
+}
+
+.button-back:hover,
+.button-back:focus {
+    background-color: #e50914;
+    color: #ffffff;            
 }
 
 .movie-add button {

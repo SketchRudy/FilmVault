@@ -36,6 +36,54 @@ main {
     border: none;
 }
 
+.button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-decoration: none;     
+    color: #fff;
+    background-color: #E50914;  
+    border: none;
+    cursor: pointer;
+    margin-left: -1px;         
+    border-radius: 0 4px 4px 0; 
+    transition: background-color 0.3s ease;
+  }
+  
+.button:hover,
+.button:focus {
+    background-color: #ff3d3d; 
+    outline: none;
+}
+  
+.button-clear {
+    background-color: #333;
+    margin-left: 0.5rem; 
+    border-radius: 4px;  
+}
+  
+.button-clear:hover,
+.button-clear:focus {
+    background-color: #555;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+    border-bottom: 4px solid #e50914;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+header h1 a:hover {
+    text-decoration: underline;
+}
+  
+
 .add-movie-section {
     text-align: center;
     margin-bottom: 30px;
