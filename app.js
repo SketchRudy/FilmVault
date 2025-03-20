@@ -84,7 +84,31 @@ app.get('/edit/:id', async (req, res) => {
     connection.release();
 })
 
+app.post('/edit-movie', async (req, res) => {
+    const editMovie = {
+        movielogID: req.body.movielogID,
+        title: req.body.title,
+        director: req.body.director,
+        genre: req.body.genre,
+        year: req.body.year,
+        comments: req.body.comments
+      };
 
+    const connection = await connect();
+    await connection.query(
+        `UPDATE movieLog SET title = ?, director = ?, genre = ?, year = ?, comments = ? WHERE movielogID = ?`,
+        [
+            editMovie.title, 
+            editMovie.director, 
+            editMovie.genre, 
+            editMovie.year, 
+            editMovie.comments, 
+            editMovie.movielogID
+        ]
+      );
+      res.redirect('/');
+      connection.release();
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
