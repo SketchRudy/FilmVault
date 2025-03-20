@@ -23,6 +23,7 @@
       });
     %>
 
+    <!-- Search -->
     <main>
         <section class="search-section">
             <form action="/search" method="GET">
@@ -41,6 +42,7 @@
         <section class="movie-list">
             <h1>Your Movies</h1>
 
+            <!-- Shows genre for each movie -->
             <% for (let genre in groupedMovies) { %>
               <div class="genre-section">
                 <h2>
@@ -52,7 +54,8 @@
                     <h3><%= movie.title %> - <%= movie.year %></h3>
                     <h4><%= movie.director %></h4>
                     <hr>
-                    <p><%= movie.comments %></p>
+                    <p>Comments:<br><%= movie.comments %></p>
+                    <a href="/edit/<%= movie.movielogID %>" class ="button button-edit">Edit</a>
                   </div>
                 <% }) %>
               </div>

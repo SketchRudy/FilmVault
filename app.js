@@ -68,6 +68,24 @@ app.get('/search', async (req,res) => {
       connection.release();
 })
 
+app.get('/edit/:id', async (req, res) => {
+    const movieID = req.params.id // Access' route parameters
+    const connection = await connect();
+    const result = await connection.query(
+        `SELECT * FROM movieLog WHERE movielogID = ?`,
+        [movieID]
+    );
+    if(result.length > 0) {
+        const movie = result[0];
+        res.render('editMovie', { movie });
+    } else {
+        res.status(404).send('Movie not found'); 
+    }
+    connection.release();
+})
+
+
+
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
