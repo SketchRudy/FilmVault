@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Vault</title>
+    <link rel="stylesheet" href="/styles/editMovie.css">
 </head>
 <body>
     <header>
@@ -11,14 +12,22 @@
         <p>Edit your movie details</p>
       </header>
       <main>
+
+        <section class="back-button-section">
+            <a href="/" class="button button-back">Back</a>
+        </section>
+
         <section class="movie-edit">
             <h2>Edit Movie</h2>
             <form action="/edit-movie" method="POST">
               <!-- Include the movie ID in a hidden input -->
-              <input type="hidden" name="movielogID" value="<%= movie.movielogID %>">
-              
+              <input type="hidden" name="movielogID" value="<%= movie.movielogID %>">  
+
+              <div class="form">
+              <!-- Fields are pre-populared so user can see what to edit -->
               <input type="text" name="title" placeholder="Movie Title" value="<%= movie.title %>" required>
               <input type="text" name="director" placeholder="Director" value="<%= movie.director %>" required>
+              <!-- conditional logic to mark option as selected if it matches current movie genre-->
               <select name="genre">
                 <option value="action" <%= movie.genre === 'action' ? 'selected' : '' %>>Action</option>
                 <option value="adventure" <%= movie.genre === 'adventure' ? 'selected' : '' %>>Adventure</option>
@@ -32,8 +41,15 @@
                 <option value="thriller" <%= movie.genre === 'thriller' ? 'selected' : '' %>>Thriller</option>
               </select>
               <input type="number" name="year" placeholder="Year Released" value="<%= movie.year %>" required>
+              </div>
+
+              <div class="form">
               <textarea name="comments" placeholder="Add Comments"><%= movie.comments %></textarea>
+              </div>
+
+              <div class="form">
               <button type="submit" class="button button-edit-submit">Update Movie</button>
+              </div>
             </form>
           </section>
       </main>
