@@ -41,6 +41,10 @@ main {
     text-align: left;  
 }
 
+textarea {
+    width: 91%;
+    height: 100px;
+}
 
 .button-back {
     display: inline-block;

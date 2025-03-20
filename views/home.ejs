@@ -46,16 +46,16 @@
             <% for (let genre in groupedMovies) { %>
               <div class="genre-section">
                 <h2>
-                  <img src='img/<%=genre%>.png' width="45px" height="45px" alt="genre icon">
                   <%= genre %>
                 </h2>
                 
                 <% groupedMovies[genre].forEach(movie => { %>
                   <div class="movie-entry">
-                    <h3><%= movie.title %> - <%= movie.year %></h3>
+                    <h1><%= movie.title %> - <%= movie.year %></h1>
+                    <h3><%= movie.rating %>/5 ☆☆☆☆☆</h3>
                     <h4><%= movie.director %></h4>
                     <hr>
-                    <p>Comments:<br><%= movie.comments %></p>
+                    <p><%= movie.comments %></p>
                     <a href="/edit/<%= movie.movielogID %>" class ="button button-edit">Edit</a>
                   </div>
                 <% }) %>

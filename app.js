@@ -1,6 +1,7 @@
 import express from 'express';
 import mariadb from 'mariadb';
 import dotenv from 'dotenv';
+import { validateForm } from './public/scripts/server-validation.js';
 
 dotenv.config();
 
@@ -49,14 +50,23 @@ app.post('/submit-movie', async(req,res) => {
         director: req.body.director,
         genre: req.body.genre,
         year: req.body.year,
+        rating: req.body.rating,
         comments: req.body.comments
     }
+
+    const result = validateForm(newMovie);
+     if (!result.isValid) {
+         console.log(result.errors);
+         res.send(result.errors);
+         return;
+     }
+
     const connection = await connect();
     
     await connection.query(
-        `INSERT INTO movieLog (title, director, genre, year, comments)
-         VALUES (?, ?, ?, ?, ?)`,
-        [newMovie.title, newMovie.director, newMovie.genre, newMovie.year, newMovie.comments]
+        `INSERT INTO movieLog (title, director, genre, year, rating, comments)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [newMovie.title, newMovie.director, newMovie.genre, newMovie.year, newMovie.rating, newMovie.comments]
     );    
     connection.release();
 
@@ -98,17 +108,19 @@ app.post('/edit-movie', async (req, res) => {
         director: req.body.director,
         genre: req.body.genre,
         year: req.body.year,
+        rating: req.body.rating,
         comments: req.body.comments
       };
 
     const connection = await connect();
     await connection.query(
-        `UPDATE movieLog SET title = ?, director = ?, genre = ?, year = ?, comments = ? WHERE movielogID = ?`,
+        `UPDATE movieLog SET title = ?, director = ?, genre = ?, year = ?, rating = ?, comments = ? WHERE movielogID = ?`,
         [
             editMovie.title, 
             editMovie.director, 
             editMovie.genre, 
             editMovie.year, 
+            editMovie.rating,
             editMovie.comments, 
             editMovie.movielogID
         ]
