@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Vault</title>
+</head>
+<body>
+    <header>
+        <h1><a href="/">🎬 Film Vault</a></h1>
+        <p>Edit your movie details</p>
+      </header>
+      <main>
+        <section class="movie-edit">
+            <h2>Edit Movie</h2>
+            <form action="/edit-movie" method="POST">
+              <!-- Include the movie ID in a hidden input -->
+              <input type="hidden" name="movielogID" value="<%= movie.movielogID %>">
+              
+              <input type="text" name="title" placeholder="Movie Title" value="<%= movie.title %>" required>
+              <input type="text" name="director" placeholder="Director" value="<%= movie.director %>" required>
+              <select name="genre">
+                <option value="action" <%= movie.genre === 'action' ? 'selected' : '' %>>Action</option>
+                <option value="adventure" <%= movie.genre === 'adventure' ? 'selected' : '' %>>Adventure</option>
+                <option value="animation" <%= movie.genre === 'animation' ? 'selected' : '' %>>Animation</option>
+                <option value="comedy" <%= movie.genre === 'comedy' ? 'selected' : '' %>>Comedy</option>
+                <option value="drama" <%= movie.genre === 'drama' ? 'selected' : '' %>>Drama</option>
+                <option value="fantasy" <%= movie.genre === 'fantasy' ? 'selected' : '' %>>Fantasy</option>
+                <option value="horror" <%= movie.genre === 'horror' ? 'selected' : '' %>>Horror</option>
+                <option value="romance" <%= movie.genre === 'romance' ? 'selected' : '' %>>Romance</option>
+                <option value="science-fiction" <%= movie.genre === 'science-fiction' ? 'selected' : '' %>>Science Fiction</option>
+                <option value="thriller" <%= movie.genre === 'thriller' ? 'selected' : '' %>>Thriller</option>
+              </select>
+              <input type="number" name="year" placeholder="Year Released" value="<%= movie.year %>" required>
+              <textarea name="comments" placeholder="Add Comments"><%= movie.comments %></textarea>
+              <button type="submit" class="button button-edit-submit">Update Movie</button>
+            </form>
+          </section>
+      </main>
+    
+</body>
+</html>
