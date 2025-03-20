@@ -27,7 +27,7 @@
     <main>
         <section class="search-section">
             <form action="/search" method="GET">
-                <input type="text" name="search" placeholder="Search movies..." value="<%= search %>" />
+                <input type="text" name="search" placeholder="Search movies by title..." value="<%= search %>" />
                 <button type="submit" class="button button-search">Search</button>
                 <% if (search && search.trim()) { %>
                     <a href="/" class="button button-clear">Clear Search</a>
