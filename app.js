@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
 import { validateForm } from './public/scripts/server-validation.js';
+import { Filter } from 'bad-words';
 
 
 dotenv.config();
@@ -114,15 +115,15 @@ app.post('/login', async(req,res) => {
         );
         connection.release();
 
-        if (result.length ===0) {
-            return res.send("User not found");
+        if (result.length === 0) {
+            return res.render('login', { error: 'User not found.' });
         }
 
         const user = result[0];
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
-            return res.send("Incorrect password");
+            return res.render('login', { error: 'Incorrect Password.' });
         }
 
         req.session.userID = user.userID;
@@ -154,6 +155,8 @@ app.get('/addMovie', (req,res) => {
     res.render('addMovie');
 });
 app.post('/submit-movie', async(req,res) => {
+    const filter = new Filter();
+
     const newMovie = {
         title: req.body.title,
         director: req.body.director,
@@ -162,6 +165,8 @@ app.post('/submit-movie', async(req,res) => {
         rating: req.body.rating,
         comments: req.body.comments
     }
+
+    newMovie.comments = filter.clean(newMovie.comments);
 
     const result = validateForm(newMovie);
      if (!result.isValid) {
@@ -226,6 +231,8 @@ app.get('/edit/:id', async (req, res) => {
 })
 
 app.post('/edit-movie', async (req, res) => {
+    const filter =  new Filter();
+
     const editMovie = {
         movielogID: req.body.movielogID,
         title: req.body.title,
@@ -236,9 +243,11 @@ app.post('/edit-movie', async (req, res) => {
         comments: req.body.comments
       };
 
+      editMovie.comments = filter.clean(editMovie.comments);
+
     const connection = await connect();
     await connection.query(
-        `UPDATE movieLog SET title = ?, director = ?, genre = ?, year = ?, rating = ?, comments = ? WHERE movielogID = ?`,
+        `UPDATE movielog SET title = ?, director = ?, genre = ?, year = ?, rating = ?, comments = ? WHERE movielogID = ?`,
         [
             editMovie.title, 
             editMovie.director, 
