@@ -9,8 +9,9 @@
 --     year INT,
 --     rating INT,
 --     comments TEXT,
-    
---     PRIMARY KEY (movielogID)
+--     userID INT, 
+--     PRIMARY KEY (movielogID,
+--     FOREIGN KEY (userID) REFERENCES users(userID)
 -- );
 
 -- DROP TABLE movieLog

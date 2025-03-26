@@ -1,0 +1,95 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    text-align: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+    border-bottom: 4px solid #e50914;
+  }
+  
+  header h1 a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  header h1 a:hover {
+    text-decoration: underline;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+  
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    color: white;
+  }
+  
+  input:focus {
+    outline: 2px solid #e50914;
+  }
+  
+  .button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #ff3d3d;
+  }
+  
+  .button-clear {
+    background-color: #333;
+    margin-top: 10px;
+  }
+  
+  .button-clear:hover {
+    background-color: #555;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #888;
+    margin-top: 30px;
+  }
+  

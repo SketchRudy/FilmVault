@@ -1,7 +1,10 @@
 import express from 'express';
 import mariadb from 'mariadb';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+import session from 'express-session';
 import { validateForm } from './public/scripts/server-validation.js';
+
 
 dotenv.config();
 
@@ -31,18 +34,123 @@ async function connect() {
 }
 
 const app = express();
+app.use(session({
+    secret: 'some-random-secret-here',
+    resave: false,
+    saveUninitialized: false
+  }));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
 const PORT = 7000;
 app.get('/', async(req,res) => {
     const connection = await connect();
-    const movies = await connection.query(`SELECT * FROM movieLog;`);
-    res.render('home',{ movies, search: '' }); // Define search as an empty string so it won't throw an error visiting home page
+    // Logged-in users will see their own movies
+    let movies = [];
+    if (req.session.userID) {
+        const movies = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
+    }
+    res.render('home',{ movies, 
+        search: '', // Define search as an empty string so it won't throw an error visiting home page
+        user: req.session.userID ? { // Display current user with ternary operator
+            id: req.session.userID,
+            username: req.session.username
+          } : null
+          
+    }); 
     connection.release();
 
 });
+
+app.get('/register', (req,res) => {
+    res.render('register');
+})
+
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    //  If fields are empty
+    if (!username || !password) {
+        return res.send("Username and password are required");
+    }
+
+    try {
+        // "Salt rounds", passing passwords with bcrypt adds a random salt (some extra data) and then hashes it (makes it more secure)
+        // 2^10 = 1024 rounds of processing. more rounds = more secure but slightly slower to comptute
+        const hashedPassword = await bcrypt.hash(password, 10); 
+        const connection = await connect();
+
+        await connection.query(
+            `INSERT into users (username, password) VALUES (?, ?)`,
+            [username, hashedPassword]
+        );
+        connection.release();
+
+        console.log(`Registered user: ${username}`);
+        res.redirect('/login');
+    } catch (err) {
+        console.error("Error registering user:", err);
+        res.send("Something went wrong while registering");
+    }
+})
+
+app.get('/login', (req,res) => {
+    res.render('login');
+})
+
+app.post('/login', async(req,res) => {
+
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.send("Username and password are required.");
+    }
+
+    try {
+        const connection = await connect();
+        const result = await connection.query(
+            `SELECT * FROM users WHERE username = ?`,
+            [username]
+        );
+        connection.release();
+
+        if (result.length ===0) {
+            return res.send("User not found");
+        }
+
+        const user = result[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.send("Incorrect password");
+        }
+
+        req.session.userID = user.userID;
+        req.session.username = user.username;
+
+        console.log(`Logged in as ${user.username}`);
+        res.redirect('/');
+    } catch (err) {
+        console.error("Login Error:", err);
+        res.send("Something went wrong during login")
+    }
+
+})
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Logout error:", err);
+        }
+        res.redirect('/');
+    });
+});
+
+
 app.get('/addMovie', (req,res) => {
+    if (!req.session.userID) {
+        return res.redirect('/login');
+    }
     res.render('addMovie');
 });
 app.post('/submit-movie', async(req,res) => {
@@ -65,9 +173,9 @@ app.post('/submit-movie', async(req,res) => {
     const connection = await connect();
     
     await connection.query(
-        `INSERT INTO movieLog (title, director, genre, year, rating, comments)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [newMovie.title, newMovie.director, newMovie.genre, newMovie.year, newMovie.rating, newMovie.comments]
+        `INSERT INTO movieLog (title, director, genre, year, rating, comments, userID)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [newMovie.title, newMovie.director, newMovie.genre, newMovie.year, newMovie.rating, newMovie.comments, req.session.userID]
     );    
     connection.release();
 

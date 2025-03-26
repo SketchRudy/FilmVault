@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Vault</title>
     <link rel="stylesheet" href="/styles/home.css">
 </head>
 <body>
     <header>
-        <h1><a href="/">🎬 Film Vault</a></h1>
+        <h1><a href="/">🎬 FilmVault</a></h1>
         <p>Manage your favorite movies in one place</p>
+        <% if (user && user.username) { %>
+          <p>Welcome, <%= user.username %>!</p>
+          <a href="/logout">Logout</a>
+        <% } else { %>
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+        <% } %>
     </header>
 
     <% 
@@ -66,6 +74,7 @@
 
 
     <footer>
+      <p>&copy; 2025 FilmVault</p>
     </footer>
 </body>
 </html>
