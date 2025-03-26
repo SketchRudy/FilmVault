@@ -45,18 +45,18 @@ app.use(express.static('public'));
 const PORT = 7000;
 app.get('/', async(req,res) => {
     const connection = await connect();
-    // Logged-in users will see their own movies
+    // Logged in users will see their own movies
     let movies = [];
     if (req.session.userID) {
-        const movies = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
+        movies = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
+    } else {
+        movies = await connection.query(`SELECT * FROM movieLog`)
     }
     res.render('home',{ movies, 
         search: '', // Define search as an empty string so it won't throw an error visiting home page
         user: req.session.userID ? { // Display current user with ternary operator
             id: req.session.userID,
-            username: req.session.username
-          } : null
-          
+            username: req.session.username} : null
     }); 
     connection.release();
 
@@ -83,7 +83,7 @@ app.post('/register', async (req, res) => {
         await connection.query(
             `INSERT into users (username, password) VALUES (?, ?)`,
             [username, hashedPassword]
-        );
+        ); 
         connection.release();
 
         console.log(`Registered user: ${username}`);
@@ -186,19 +186,34 @@ app.post('/submit-movie', async(req,res) => {
 app.get('/search', async (req,res) => {
     const search = req.query.search || '';
     const connection = await connect();
-    const movies = await connection.query(
-        `SELECT * FROM movieLog WHERE LOWER(title) LIKE LOWER(?)`,
-        [`%${search}%`] // will match any title containing the search term within it
-      );
-      res.render('home', { movies, search });
-      connection.release();
+    let movies = [];
+
+    if (req.session.userID) {
+        movies = await connection.query(
+            `SELECT * FROM movieLog WHERE userID = ? AND LOWER(title) LIKE LOWER(?)`,
+            [req.session.userID, `%${search}%`] // will match any title containing the search term within it
+          );
+    } else {
+        // If not logged in, show no movies 
+        movies = await connection.query(
+            `SELECT * FROM movieLog WHERE LOWER(title) LIKE LOWER(?)`,
+            [`%${search}%`]
+        );
+    }
+    
+      res.render('home', { movies, search, user: req.session.userID ? {
+        id: req.session.userID,
+        username: req.session.username
+      } : null
+    });
+    connection.release();
 })
 
 app.get('/edit/:id', async (req, res) => {
     const movieID = req.params.id // Access' route parameters
     const connection = await connect();
     const result = await connection.query(
-        `SELECT * FROM movieLog WHERE movielogID = ?`,
+        `SELECT * FROM movieLog WHERE movieLogID = ?`,
         [movieID]
     );
     if(result.length > 0) {
