@@ -55,7 +55,7 @@ main {
     background-color: #ff3d3d; 
     outline: none;
 }
-  
+
 .button-clear {
     background-color: #333;
     margin-left: 0.5rem; 
@@ -65,6 +65,27 @@ main {
 .button-clear:hover,
 .button-clear:focus {
     background-color: #555;
+}
+
+.button-nav {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: #fff;
+    background-color: #333; 
+    border: 1px solid #444; 
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 0.5rem;    
+}
+
+.button-nav:hover,
+.button-nav:focus {
+    background-color: #444;
+    border-color: #555;
+    outline: none;
 }
 
 header {
