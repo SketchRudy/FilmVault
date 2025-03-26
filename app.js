@@ -76,7 +76,7 @@ app.post('/register', async (req, res) => {
 
     try {
         // "Salt rounds", passing passwords with bcrypt adds a random salt (some extra data) and then hashes it (makes it more secure)
-        // 2^10 = 1024 rounds of processing. more rounds = more secure but slightly slower to comptute
+        // 2^10 = 1024 rounds of processing. more rounds = more secure but slightly slower to compute
         const hashedPassword = await bcrypt.hash(password, 10); 
         const connection = await connect();
 
