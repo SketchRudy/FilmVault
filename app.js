@@ -53,7 +53,18 @@ app.get('/', async(req,res) => {
     } else {
         movies = await connection.query(`SELECT * FROM movieLog`)
     }
+
+    const groupedMovies = {};
+
+    movies.forEach(movie => {
+      if (!groupedMovies[movie.genre]) {
+        groupedMovies[movie.genre] = [];
+      }
+      groupedMovies[movie.genre].push(movie);
+    });
+    
     res.render('home',{ movies, 
+        groupedMovies,
         search: '', // Define search as an empty string so it won't throw an error visiting home page
         user: req.session.userID ? { // Display current user with ternary operator
             id: req.session.userID,
@@ -260,6 +271,20 @@ app.post('/edit-movie', async (req, res) => {
       );
       res.redirect('/');
       connection.release();
+})
+
+app.delete('/movie/:id', async(req,res) =>{
+    const movieID = req.params.id;
+    try {
+    const connection = await connect();
+    await connection.query(`DELETE FROM movieLog WHERE movielogID = ?`, [movieID]);
+    connection.release();
+    console.log(`Movie ${movieID} successfully deleted`);
+    res.status(200).json({ success: true });
+    } catch (err) {
+        console.error("Error deleting movie", err);
+        res.status(500).json({ success: false, error: 'Deletion Failed'});
+    }
 })
 
 app.listen(PORT, () => {

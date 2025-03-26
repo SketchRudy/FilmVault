@@ -20,17 +20,20 @@
         <% } %>
     </header>
 
-    <% 
-      const groupedMovies = {};
-
-      movies.forEach(movie => {
-        if (!groupedMovies[movie.genre]) {
-          groupedMovies[movie.genre] = [];
+    <!-- Dynamic star rating -->
+    <% function renderStars(rating) {
+      let stars = '';
+      for (let i = 1;i <=5; i++) {
+        if (i <= rating) {
+          stars += '&#9733;'; // Filled star symbol
+        } else {
+          stars += '&#9734;' // Empty star symbol
         }
-        groupedMovies[movie.genre].push(movie);
-      });
+      }
+      return stars
+    }
     %>
-
+    
     <!-- Search -->
     <main>
         <section class="search-section">
@@ -61,14 +64,16 @@
                   <%= genre %>
                 </h2>
                 <% groupedMovies[genre].forEach(movie => { %>
-                  <div class="movie-entry">
+                  <div class="movie-entry" id="movie-<%= movie.movielogID %>">
                     <h1><%= movie.title %> - <%= movie.year %></h1>
-                    <h3><%= movie.rating %>/5 ☆☆☆☆☆</h3>
+
+                    <h3 class="movie-rating"><%- renderStars(movie.rating) %> (<%= movie.rating %>/5)</h3>
                     <h4><%= movie.director %></h4>
                     <hr>
                     <p><%= movie.comments %></p>
                     <% if (user && user.username) { %>
                     <a href="/edit/<%= movie.movielogID %>" class ="button button-edit">Edit</a>
+                    <button onclick="deleteMovie('<%= movie.movielogID %>')" class="button button-delete">Delete</button>
                     <% } %>
                   </div>
                 <% }) %>
