@@ -60,7 +60,6 @@
                 <h2>
                   <%= genre %>
                 </h2>
-                  
                 <% groupedMovies[genre].forEach(movie => { %>
                   <div class="movie-entry">
                     <h1><%= movie.title %> - <%= movie.year %></h1>
@@ -75,6 +74,7 @@
                 <% }) %>
               </div>
             <% } %>
+
           <% } %>
         </section>
     </main>

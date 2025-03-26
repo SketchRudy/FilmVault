@@ -189,7 +189,7 @@ app.post('/submit-movie', async(req,res) => {
 });
 
 app.get('/search', async (req,res) => {
-    const search = req.query.search || '';
+    const search = req.query.search || '';    
     const connection = await connect();
     let movies = [];
 
