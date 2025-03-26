@@ -12,10 +12,10 @@
         <p>Manage your favorite movies in one place</p>
         <% if (user && user.username) { %>
           <p>Welcome, <%= user.username %>!</p>
-          <a href="/logout">Logout</a>
+          <a href="/logout" class = "button-nav">Logout</a>
         <% } else { %>
-          <a href="/login">Login</a>
-          <a href="/register">Register</a>
+          <a href="/login" class="button-nav">Login</a>
+          <a href="/register" class="button-nav">Register</a>
         <% } %>
     </header>
 

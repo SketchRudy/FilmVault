@@ -4,20 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Film Vault</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/styles/register.css">
 </head>
 <body>
-    <h1>Register</h1>
-    <form action="/register" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" required><br>
+    <header>    
+        <h1><a href="/">🎬 FilmVault</a></h1>
+        <p>Manage your favorite movies in one place</p>
+    </header>
 
-    <label for="password">Password:</label>
-    <input type="password" name="password" required><br>
+    <main class="register-container">
+        <h2>Register</h2>
+        <form action="/register" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
 
-    <button type="submit">Register</button>
-    </form>
-    <a href="/">Go Home</a>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="button">Register</button>
+        </form>
+        <a href="/" class="button button-clear">Go Home</a>
+    </main> 
     
 </body>
 </html>

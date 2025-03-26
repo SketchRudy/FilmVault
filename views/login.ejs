@@ -7,26 +7,24 @@
     <link rel="stylesheet" href="/styles/login.css">
 </head>
 <body>
-    <header>
-        <h1><a href="/">FilmVault</a></h1>
+    <header>    
+        <h1><a href="/">🎬 FilmVault</a></h1>
         <p>Manage your favorite movies in one place</p>
-
     </header>
 
-    <main class="login-container">
+    <main class="register-container">
         <h2>Login</h2>
-
         <form action="/login" method="POST">
-        <label for="username">Username</label>
-        <input type="text" name="username" required>
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
 
-        <button type="submit" class="button">Login</button>
-        <a href="/register" class="button button-clear">Register</a>
+            <button type="submit" class="button">Login</button>
         </form>
-    </main>
+        <a href="/" class="button button-clear">Go Home</a>
+    </main> 
 
     <footer>
         <p>&copy; 2025 FilmVault</p>
