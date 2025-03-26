@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film Vault</title>
+    <title>FilmVault</title>
     <link rel="stylesheet" href="/styles/home.css">
-</head>
+    <link rel="stylesheet" href="/styles/shared.css">
+  </head>
 <body>
     <header>
         <h1><a href="/">🎬 FilmVault</a></h1>
@@ -20,7 +21,6 @@
     </header>
 
     <% 
-
       const groupedMovies = {};
 
       movies.forEach(movie => {
@@ -78,8 +78,7 @@
           <% } %>
         </section>
     </main>
-    <footer>
-      <p>&copy; 2025 FilmVault</p>
-    </footer>
+
+    <%- include('partials/footer') %>
 </body>
 </html>

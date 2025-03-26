@@ -161,5 +161,6 @@ footer {
     padding: 15px;
     font-size: 14px;
     color: #888;
-    margin-top: 30px;
+    background-color: #1f1f1f;
+    border-top: 4px solid #e50914;
 }
