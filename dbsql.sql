@@ -1,6 +1,13 @@
 -- CREATE DATABASE filmvault;
 -- USE filmvault;
 
+-- CREATE TABLE users (
+-- 	   userID INT auto_increment,
+--     username VARCHAR(255),
+--     password VARCHAR(255),
+--     PRIMARY KEY (userID)
+-- );
+
 -- CREATE TABLE movieLog (
 -- 	   movielogID INT auto_increment,
 --     title VARCHAR(255),
