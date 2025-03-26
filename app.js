@@ -5,19 +5,20 @@ import { validateForm } from './public/scripts/server-validation.js';
 
 dotenv.config();
 
+const pool = mariadb.createPool({
+    host: process.env.DB_HOST_LOCAL,
+    user: process.env.DB_USER_LOCAL,
+    password: process.env.DB_PASSWORD_LOCAL,
+    database: process.env.DB_DATABASE_LOCAL
+});
+
 // const pool = mariadb.createPool({
-//     host: process.env.DB_HOST_LOCAL,
-//     user: process.env.DB_USER_LOCAL,
-//     password: process.env.DB_PASSWORD_LOCAL,
-//     database: process.env.DB_DATABASE_LOCAL
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_DATABASE
 // });
 
-const pool = mariadb.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
-});
 
 async function connect() {
     try {
