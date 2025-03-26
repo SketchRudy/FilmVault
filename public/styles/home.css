@@ -123,6 +123,23 @@ header h1 a:hover {
     background-color: #ff3d3d;
 }
 
+.genre-section {
+    margin-top: 20px; 
+    padding: 10px 0; 
+    border-top: 1px solid #444; 
+}
+  
+.genre-section h2 {
+    color: #e50914;         
+    margin-bottom: 10px;    
+    font-size: 1.2rem;      
+    text-transform: uppercase;
+    display: inline-block;  
+    border-bottom: 2px solid #e50914; 
+    padding-bottom: 3px;    
+}
+  
+
 .movie-list {
     margin-top: 20px;
 }
