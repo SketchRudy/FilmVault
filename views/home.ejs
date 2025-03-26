@@ -48,15 +48,19 @@
         </section>
 
         <section class="movie-list">
-            <h1>Your Movies</h1>
+          <h1><%= (user && user.username) ? "Your Movies" : "FilmVault Collection" %></h1>
+          
+          <% if (movies.length === 0) { %>
+            <p class="no-movies-msg">No Movies Found.</p>
+            <% } else { %>
 
-            <!-- Shows genre for each movie -->
+              <!-- Shows genre for each movie -->
             <% for (let genre in groupedMovies) { %>
               <div class="genre-section">
                 <h2>
                   <%= genre %>
                 </h2>
-                
+                  
                 <% groupedMovies[genre].forEach(movie => { %>
                   <div class="movie-entry">
                     <h1><%= movie.title %> - <%= movie.year %></h1>
@@ -64,15 +68,16 @@
                     <h4><%= movie.director %></h4>
                     <hr>
                     <p><%= movie.comments %></p>
+                    <% if (user && user.username) { %>
                     <a href="/edit/<%= movie.movielogID %>" class ="button button-edit">Edit</a>
+                    <% } %>
                   </div>
                 <% }) %>
               </div>
             <% } %>
+          <% } %>
         </section>
     </main>
-
-
     <footer>
       <p>&copy; 2025 FilmVault</p>
     </footer>
