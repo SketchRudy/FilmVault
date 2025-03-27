@@ -1,0 +1,101 @@
+
+/* */
+:root {
+    --color-bg: #121212;
+    --color-panel: #1f1f1f;
+    --color-accent: #e50914;
+    --color-accent-hover: #ff3d3d;
+    --color-text: #e0e0e0;
+    --font-heading: 'Georgia', serif;
+    --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --radius: 6px;
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at center, #1a1a1a 0%, #121212 100%);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+  
+.vault-intro {
+    background: rgba(31, 31, 31, 0.85);
+    padding: 3rem 2rem;
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius);
+    max-width: 600px;
+    text-align: center;
+    animation: fadeSlideIn 1s ease-out;
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.25);
+}
+  
+.vault-intro h1 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-accent);
+    text-shadow: 1px 1px 1px #000;
+}
+  
+.vault-intro p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #ccc;
+    margin-bottom: 2rem;
+    white-space: pre-line;
+}
+  
+.vault-continue {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-accent);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--radius);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.3);
+}
+  
+.vault-continue:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+}
+  
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .vault-intro {
+      padding: 2rem 1.2rem;
+    }
+  
+    .vault-intro h1 {
+      font-size: 1.6rem;
+    }
+  
+    .vault-intro p {
+      font-size: 1rem;
+    }
+  
+    .vault-continue {
+      width: 100%;
+      font-size: 1rem;
+    }
+  }
+  
