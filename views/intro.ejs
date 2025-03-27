@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Film Vault</title>
+    <title>Film Vault</title>
     <link rel="stylesheet" href="/styles/intro.css">
+    <link rel="icon" href="/images/favicon.png">
 </head>
 <body>
-    
+
     <section class="vault-intro">
         <h1>🎬 Welcome to FilmVault</h1>
         <p>
@@ -17,9 +18,24 @@
           Add them to your collection. Leave your mark.<br>
           Your vault, your legacy.
         </p>
-        <!-- Redirect users to the intro page (once per tab/session)-->
 
-        <a href="/" class="vault-continue" onclick="sessionStorage.setItem('seenIntro', 'yes')">Enter Vault</a>
+        <button class="vault-continue" onclick="enterVault()">Enter Vault</button>
       </section>
+
+      <script>
+        function enterVault() {
+          const section = document.querySelector('.vault-intro');
+          section.classList.add('fade-out');
+          sessionStorage.setItem('seenIntro', 'yes');
+
+          // Redirects after a fade animation finishes (set to 600ms)
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 600);
+        }
+
+      </script>
+      
+
 </body>
 </html>
