@@ -6,6 +6,8 @@
     <title>FilmVault</title>
     <link rel="stylesheet" href="/styles/home.css">
     <link rel="stylesheet" href="/styles/shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/scripts/modal.js" defer></script>
   </head>
 <body>
     <header>
@@ -73,7 +75,9 @@
                     <p><%= movie.comments %></p>
                     <% if (user && user.username) { %>
                     <a href="/edit/<%= movie.movielogID %>" class ="button button-edit">Edit</a>
-                    <button onclick="deleteMovie('<%= movie.movielogID %>')" class="button button-delete">Delete</button>
+                    <button onclick="openDeleteModal('<%= movie.movielogID %>')" class="button button-delete">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                     <% } %>
                   </div>
                 <% }) %>
@@ -85,5 +89,14 @@
     </main>
 
     <%- include('partials/footer') %>
+
+    <!-- Confirmation Modal -->
+    <div id = "deleteModal" class="modal">
+      <div class="modal-content">
+        <p>Are you sure you want to delete this movie?</p>
+        <div id="confirmDelete" class="button">Yes, Delete</div>
+        <div id="cancelDelete" class="button">Cancel</div>
+      </div>
+    </div>
 </body>
 </html>
