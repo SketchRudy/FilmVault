@@ -226,11 +226,21 @@ app.get('/search', async (req,res) => {
             [`%${search}%`]
         );
     }
+
+    const groupedMovies = {};
+
+    movies.forEach(movie => {
+      if (!groupedMovies[movie.genre]) {
+        groupedMovies[movie.genre] = [];
+      }
+      groupedMovies[movie.genre].push(movie);
+    });
     
-      res.render('home', { movies, search, user: req.session.userID ? {
-        id: req.session.userID,
-        username: req.session.username
-      } : null
+      res.render('home', { movies, 
+        groupedMovies,
+        search, user: req.session.userID ? {
+            id: req.session.userID,
+            username: req.session.username} : null
     });
     connection.release();
 })
