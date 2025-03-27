@@ -43,7 +43,7 @@ app.use(session({
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
-const PORT = 8001;
+const PORT = 7000;
 app.get('/', async(req,res) => {
     const connection = await connect();
     // Logged in users will see their own movies
@@ -307,9 +307,6 @@ app.delete('/movie/:id', async(req,res) =>{
     }
 })
 
-// app.listen(PORT, () => {
-//     console.log(`Server is running at http://localhost:${PORT}`);
-// });
-app.listen(PORT,'0.0.0.0', () => {
-    console.log(`Server is running at http://0.0.0.0:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
 });
