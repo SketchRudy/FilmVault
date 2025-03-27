@@ -88,13 +88,6 @@ main {
     outline: none;
 }
 
-header {
-    text-align: center;
-    padding: 20px;
-    background-color: #1f1f1f;
-    border-bottom: 4px solid #e50914;
-}
-
 header h1 a {
     text-decoration: none;
     color: inherit; 

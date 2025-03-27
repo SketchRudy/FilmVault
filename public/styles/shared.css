@@ -4,7 +4,7 @@ footer {
     font-size: 14px;
     color: #888;
     background-color: #1f1f1f;
-    border-top: 2px solid #e50914;
+    border-top: 4px solid #e50914;
   }
   
 html, body {
@@ -111,7 +111,6 @@ main {
     .movie-entry h1 {
         font-size: 1.2rem;
         padding-right: 2.2rem; 
-        position: relative;
     }
 
     .movie-rating {
@@ -123,15 +122,8 @@ main {
     }
 
     .button.button-delete {
-        position: absolute;
         top: 6px;
         right: 10px;
-        padding: 0.3rem;
-        background: transparent;
-    }
-
-    .button.button-delete i {
-        font-size: 1.3rem;
     }
 
     .movie-entry .button-edit {
@@ -206,11 +198,6 @@ main {
         display: block;
         margin: 10px auto;
         text-align: center;
-    }
-
-    .movie-entry {
-        padding: 8px;
-        font-size: 0.9rem;
     }
 
     .movie-entry h1 {
