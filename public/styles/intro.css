@@ -52,50 +52,68 @@ body {
   
 .vault-continue {
     display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--color-accent);
+    max-width: 220px;
+    width: 100%;
+    text-align: center;
+    padding: 0.7rem 1.2rem;
+    background: #e50914;
     color: white;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1rem;
     border: none;
-    border-radius: var(--radius);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 4px;
     text-decoration: none;
-    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.3);
-}
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin: 0 auto;
+  }
+  
   
 .vault-continue:hover {
     background-color: var(--color-accent-hover);
     transform: translateY(-2px);
 }
   
-  @keyframes fadeSlideIn {
+@keyframes fadeSlideIn {
     from {
-      opacity: 0;
-      transform: translateY(40px);
+        opacity: 0;
+        transform: translateY(40px);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  
-  @media (max-width: 480px) {
+}
+
+
+@media (min-width: 480px) {
+    body {
+        font-size: 1.2rem;
+        line-height: 2rem;
+        padding: 2rem;
+    }
+
     .vault-intro {
-      padding: 2rem 1.2rem;
+        padding: 3rem 2rem;
     }
-  
-    .vault-intro h1 {
-      font-size: 1.6rem;
-    }
-  
+
     .vault-intro p {
-      font-size: 1rem;
+        font-size: 1.1rem;
     }
-  
-    .vault-continue {
-      width: 100%;
-      font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    body {
+        font-size: 1.3rem;
+        padding: 3rem;
     }
-  }
-  
+
+    .vault-intro {
+        max-width: 720px;
+        padding: 3rem 2.5rem;
+    }
+
+    .vault-intro p {
+        font-size: 1.15rem;
+    }
+}
+
