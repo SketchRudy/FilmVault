@@ -31,16 +31,16 @@
               <input type="text" name="director" placeholder="Director" value="<%= movie.director %>" required>
               <!-- conditional logic to mark option as selected if it matches current movie genre-->
               <select name="genre">
-                <option value="Action" <%= movie.genre === 'action' ? 'selected' : '' %>>Action</option>
-                <option value="Adventure" <%= movie.genre === 'adventure' ? 'selected' : '' %>>Adventure</option>
-                <option value="Animation" <%= movie.genre === 'animation' ? 'selected' : '' %>>Animation</option>
-                <option value="Comedy" <%= movie.genre === 'comedy' ? 'selected' : '' %>>Comedy</option>
-                <option value="Drama" <%= movie.genre === 'drama' ? 'selected' : '' %>>Drama</option>
-                <option value="Fantasy" <%= movie.genre === 'fantasy' ? 'selected' : '' %>>Fantasy</option>
-                <option value="Horror" <%= movie.genre === 'horror' ? 'selected' : '' %>>Horror</option>
-                <option value="Romance" <%= movie.genre === 'romance' ? 'selected' : '' %>>Romance</option>
-                <option value="Science-Fiction" <%= movie.genre === 'science-fiction' ? 'selected' : '' %>>Science Fiction</option>
-                <option value="Thriller" <%= movie.genre === 'thriller' ? 'selected' : '' %>>Thriller</option>
+                <option value="Action" <%= movie.genre === 'Action' ? 'selected' : '' %>>Action</option>
+                <option value="Adventure" <%= movie.genre === 'Adventure' ? 'selected' : '' %>>Adventure</option>
+                <option value="Animation" <%= movie.genre === 'Animation' ? 'selected' : '' %>>Animation</option>
+                <option value="Comedy" <%= movie.genre === 'Comedy' ? 'selected' : '' %>>Comedy</option>
+                <option value="Drama" <%= movie.genre === 'Drama' ? 'selected' : '' %>>Drama</option>
+                <option value="Fantasy" <%= movie.genre === 'Fantasy' ? 'selected' : '' %>>Fantasy</option>
+                <option value="Horror" <%= movie.genre === 'Horror' ? 'selected' : '' %>>Horror</option>
+                <option value="Romance" <%= movie.genre === 'Romance' ? 'selected' : '' %>>Romance</option>
+                <option value="Science-Fiction" <%= movie.genre === 'Science-fiction' ? 'selected' : '' %>>Science Fiction</option>
+                <option value="Thriller" <%= movie.genre === 'Thriller' ? 'selected' : '' %>>Thriller</option>
               </select>
               <input type="number" name="year" placeholder="Year Released" value="<%= movie.year %>" required>
               </div>

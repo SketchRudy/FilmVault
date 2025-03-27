@@ -290,8 +290,8 @@ app.post('/edit-movie', async (req, res) => {
             editMovie.movielogID
         ]
       );
-      res.redirect('/');
       connection.release();
+      res.redirect('/');
 })
 
 app.delete('/movie/:id', async(req,res) =>{
