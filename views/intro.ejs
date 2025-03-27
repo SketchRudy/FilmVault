@@ -17,7 +17,9 @@
           Add them to your collection. Leave your mark.<br>
           Your vault, your legacy.
         </p>
-        <a href="/" class="vault-continue">Enter Vault</a>
+        <!-- Redirect users to the intro page (once per tab/session)-->
+
+        <a href="/" class="vault-continue" onclick="sessionStorage.setItem('seenIntro', 'yes')">Enter Vault</a>
       </section>
 </body>
 </html>
