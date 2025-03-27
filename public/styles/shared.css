@@ -37,6 +37,17 @@ main {
     font-size: 1.3rem;
   }
   
+@media (min-width: 2560px) {
+    .register-container {
+      margin-bottom: 34rem; 
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 2559px) {
+    .register-container {
+        margin-bottom: 11rem;
+    }
+}
 
 @media (min-width: 481px) and (max-width: 768px) {
     body {
