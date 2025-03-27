@@ -1,4 +1,4 @@
--- CREATE DATABASE filmvault;
+-- CREATE DATABASE IF NOT EXISTS filmvault;
 -- USE filmvault;
 
 -- CREATE TABLE users (
