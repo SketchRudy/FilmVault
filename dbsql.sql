@@ -3,8 +3,8 @@
 
 -- CREATE TABLE users (
 -- 	   userID INT auto_increment,
---     username VARCHAR(255),
---     password VARCHAR(255),
+--     username VARCHAR(255) not null unique,
+--     password VARCHAR(255) not null,
 --     PRIMARY KEY (userID)
 -- );
 
@@ -17,6 +17,7 @@
 --     rating INT,
 --     comments TEXT,
 --     PRIMARY KEY (movielogID)
+--     FOREIGN KEY (userID) REFERENCES users(userID)
 -- );
 
 -- DROP TABLE movieLog
