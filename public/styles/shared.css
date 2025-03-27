@@ -22,4 +22,216 @@ main {
     flex: 1;
     width: 100%;
 }
+
+.movie-entry {
+    position: relative;
+  }
   
+  .button.button-delete {
+    position: absolute;
+    background: transparent;
+    padding: 0.3rem;
+  }
+  
+  .button.button-delete i {
+    font-size: 1.3rem;
+  }
+  
+
+@media (min-width: 481px) and (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    header,
+    footer {
+        padding: 1.5rem;
+        box-sizing: border-box;
+    }
+
+    main {
+        padding: 0 2rem;
+        box-sizing: border-box;
+    }
+
+    .search-section form {
+        margin: 2.5rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .search-section input {
+        max-width: 400px;
+        margin: 0 auto;
+        display: block;
+        font-size: 1.1rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .search-section button {
+        max-width: 120px;
+        margin: 0 auto;
+        display: block;
+        font-size: 1rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .button,
+    .button-clear,
+    .add-movie-section button {
+        box-sizing: border-box;
+        margin-left: 0;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .button {
+        margin-top: 0.75rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header p,
+    .button-nav {
+        display: block;
+        margin: 12px auto;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .movie-entry {
+        position: relative;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .movie-entry h1 {
+        font-size: 1.2rem;
+        padding-right: 2.2rem; 
+        position: relative;
+    }
+
+    .movie-rating {
+        font-size: 1rem;
+    }
+
+    .genre-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .button.button-delete {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+        padding: 0.3rem;
+        background: transparent;
+    }
+
+    .button.button-delete i {
+        font-size: 1.3rem;
+    }
+
+    .movie-entry .button-edit {
+        display: inline-block;
+        width: auto;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+    }
+
+    .modal-content {
+        width: 80%;
+        margin: 35% auto;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    header,
+    footer {
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    main {
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .search-section form {
+        margin: 2rem 0; 
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .search-section input,
+    .search-section button,
+    .button-clear,
+    .add-movie-section button {
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+        border-radius: 5px;
+    }
+
+    .search-section input {
+        max-width: 300px;
+        margin: 0 auto;
+        display: block;
+    }      
+    .search-section button {
+        max-width: 100px;
+        margin: 0 auto;
+        display: block;
+    }
+
+
+    .button {
+        margin-top: 0.5rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p,
+    .button-nav {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .movie-entry {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .movie-entry h1 {
+        font-size: 1.1rem;
+    }
+
+    .movie-rating {
+        font-size: 0.9rem;
+    }
+
+    .genre-section h2 {
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 40% auto;
+    }
+
+    .button.button-delete {
+        top: 5px;
+        right: 5px;
+    }
+}
