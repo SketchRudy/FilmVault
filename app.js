@@ -45,6 +45,7 @@ app.set('view engine','ejs');
 app.use(express.static('public'));
 const PORT = 7000;
 app.get('/', async(req,res) => {
+
     const connection = await connect();
     // Logged in users will see their own movies
     let movies = [];
@@ -305,6 +306,10 @@ app.delete('/movie/:id', async(req,res) =>{
         console.error("Error deleting movie", err);
         res.status(500).json({ success: false, error: 'Deletion Failed'});
     }
+})
+
+app.get('/intro', (req,res) =>{
+    res.render('intro');
 })
 
 app.listen(PORT, () => {
