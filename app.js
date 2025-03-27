@@ -86,6 +86,16 @@ app.post('/register', async (req, res) => {
         return res.send("Username and password are required");
     }
 
+        const connection = await connect();
+        const existingUser = await connection.query(`SELECT  * FROM  users WHERE username = ?`,[username]);
+
+    if (existingUser.length > 0) {
+        connection.release();
+        return res.render('register', { error: "Username is already registered."})
+    }
+
+
+
     try {
         // "Salt rounds", passing passwords with bcrypt adds a random salt (some extra data) and then hashes it (makes it more secure)
         // 2^10 = 1024 rounds of processing. more rounds = more secure but slightly slower to compute
