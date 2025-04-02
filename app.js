@@ -250,7 +250,7 @@ app.get('/edit/:id', async (req, res) => {
     const movieID = req.params.id // Access' route parameters
     const connection = await connect();
     const result = await connection.query(
-        `SELECT * FROM movieLog WHERE movieLogID = ?`,
+        `SELECT * FROM movieLog WHERE movielogID = ?`,
         [movieID]
     );
     if(result.length > 0) {
@@ -279,7 +279,7 @@ app.post('/edit-movie', async (req, res) => {
 
     const connection = await connect();
     await connection.query(
-        `UPDATE movielog SET title = ?, director = ?, genre = ?, year = ?, rating = ?, comments = ? WHERE movielogID = ?`,
+        `UPDATE movieLog SET title = ?, director = ?, genre = ?, year = ?, rating = ?, comments = ? WHERE movielogID = ?`,
         [
             editMovie.title, 
             editMovie.director, 
