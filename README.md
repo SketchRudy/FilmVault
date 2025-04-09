@@ -1,7 +1,7 @@
 # 🎬 FilmVault
 
 **A full-stack movie manager app built with Node.js, Express, and MariaDB.**  
-View the live site here: 👉 [https://filmvault.example.com](https://filmvault.example.com)
+View the live site here: 👉 [https://filmvault.site](https://filmvault.site)
 
 ---
 
@@ -21,16 +21,17 @@ View the live site here: 👉 [https://filmvault.example.com](https://filmvault.
 
 ## 📸 Screenshots
 
-<h3>🏠 Home Page</h3>
-<img src="./assets/screenshots/homePage.png" alt="Home Page" width="1200"/>
+### 🏠 Home Page
+![Home Page](./assets/screenshots/homePage.png)
 
-<h3>➕ Add Movie Modal</h3>
-<img src="./assets/screenshots/addMovie.png" alt="Add Movie" width="1200"/>
+### ➕ Add Movie Modal
+![Add Movie](./assets/screenshots/addMovie.png)
 
-<h3>🔄 Update Movie Modal</h3>
-<img src="./assets/screenshots/updateExisting.png" alt="Update Movie" width="1200"/>
+### 🔄 Update Movie Modal
+![Update Existing Movie](./assets/screenshots/updateExisting.png)
 
-<h3>❌ Delete Movie</h3>
-<img src="./assets/screenshots/deleteMovie.png" alt="Delete Movie" width="1200"/>
+### ❌ Delete Movie Modal
+![Delete Movie](./assets/screenshots/deleteMovie.png)
+
 
 
