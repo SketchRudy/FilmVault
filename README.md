@@ -8,7 +8,7 @@ View the live site here: 👉 [https://filmvault.site](https://filmvault.site)
 ## Features
 - Add, edit, and delete movies in your collection  
 - Search and sort by title, genre, release year, or rating  
-- Backend RESTful API for managing data  
+- Backend with RESTful routes for managing movie data  
 - Responsive design for desktop and mobile  
 - Hosted on Google Cloud
 
