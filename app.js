@@ -10,18 +10,11 @@ import { Filter } from 'bad-words';
 dotenv.config();
 
 const pool = mariadb.createPool({
-    host: process.env.DB_HOST_LOCAL,
-    user: process.env.DB_USER_LOCAL,
-    password: process.env.DB_PASSWORD_LOCAL,
-    database: process.env.DB_DATABASE_LOCAL
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
-
-// const pool = mariadb.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_DATABASE
-// });
 
 
 async function connect() {
@@ -36,14 +29,14 @@ async function connect() {
 
 const app = express();
 app.use(session({
-    secret: 'some-random-secret-here',
+    secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
     saveUninitialized: false
-  }));
+}));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
-const PORT = 7000;
+const PORT = process.env.PORT || 7000;
 app.get('/', async(req,res) => {
 
     const connection = await connect();
@@ -81,39 +74,41 @@ app.get('/register', (req,res) => {
 
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
-
     //  If fields are empty
     if (!username || !password) return res.send("Username and password are required");
 
-        const connection = await connect();
-        const existingUser = await connection.query(`SELECT  * FROM  users WHERE username = ?`,[username]);
+    let connection;
+    try {
+        connection = await connect();
+
+        const existingUser = await connection.query(
+            `SELECT  * FROM  users WHERE username = ?`,[username]
+        );
 
     if (existingUser.length > 0) {
-        connection.release();
         return res.render('register', { error: "Username is already registered."})
     }
 
-
-
-    try {
         // "Salt rounds", passing passwords with bcrypt adds a random salt (some extra data) and then hashes it (makes it more secure)
         // 2^10 = 1024 rounds of processing. more rounds = more secure but slightly slower to compute
         const hashedPassword = await bcrypt.hash(password, 10); 
-        const connection = await connect();
 
         await connection.query(
             `INSERT into users (username, password) VALUES (?, ?)`,
             [username, hashedPassword]
         ); 
-        connection.release();
 
         console.log(`Registered user: ${username}`);
         res.redirect('/login');
     } catch (err) {
         console.error("Error registering user:", err);
         res.send("Something went wrong while registering");
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
-})
+});
 
 app.get('/login', (req,res) => {
     res.render('login');
