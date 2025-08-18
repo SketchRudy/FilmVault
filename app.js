@@ -83,9 +83,7 @@ app.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
     //  If fields are empty
-    if (!username || !password) {
-        return res.send("Username and password are required");
-    }
+    if (!username || !password) return res.send("Username and password are required");
 
         const connection = await connect();
         const existingUser = await connection.query(`SELECT  * FROM  users WHERE username = ?`,[username]);
