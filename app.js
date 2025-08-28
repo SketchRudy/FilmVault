@@ -14,7 +14,7 @@ const pool = mariadb.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    port: Number(process.env.DB_PORT || 3306) 
+    port: Number(process.env.DB_PORT || 3306)
 });
 
 
@@ -25,6 +25,7 @@ async function connect() {
         return connection;
     } catch (err) {
         console.log('Error connecting to database: ' + err);
+        throw err;
     }
 }
 
@@ -42,9 +43,15 @@ app.use(express.static('public'));
 const PORT = process.env.PORT || 7000;
 app.get('/', async(req,res) => {
 
-    const connection = await connect();
     // Logged in users will see their own movies
+    let connection;
+    try {
+        connection = await connect();
+    } catch (e) {
+        return res.status(503).send('Database unavailable, try again in a moment.');
+    }
     let movies = [];
+
     if (req.session.userID) {
         movies = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
     } else {
@@ -67,7 +74,7 @@ app.get('/', async(req,res) => {
             id: req.session.userID,
             username: req.session.username} : null
     }); 
-    connection.release();
+    if (connection) connection.release();
 
 });
 
