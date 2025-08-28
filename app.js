@@ -35,6 +35,7 @@ app.use(session({
 }));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
+app.set('trust proxy', 1); // Railway/any proxy
 app.use(express.static('public'));
 const PORT = process.env.PORT || 7000;
 app.get('/', async(req,res) => {
@@ -305,6 +306,6 @@ app.get('/intro', (req,res) =>{
     res.render('intro');
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
