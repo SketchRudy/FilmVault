@@ -13,7 +13,8 @@ const pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    database: process.env.DB_DATABASE,
+    port: Number(process.env.DB_PORT || 3306) 
 });
 
 
@@ -27,11 +28,9 @@ async function connect() {
     }
 }
 
-app.get('/health', (req, res) => res.json({ ok: true }));
-app.get('/', (req, res) => res.send('FilmVault API is alive'));
-
-
 const app = express();
+app.get('/health', (req, res) => res.json({ ok: true }));
+app.set('trust proxy', 1); // Railway/any proxy
 app.use(session({
     secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
@@ -39,7 +38,6 @@ app.use(session({
 }));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
-app.set('trust proxy', 1); // Railway/any proxy
 app.use(express.static('public'));
 const PORT = process.env.PORT || 7000;
 app.get('/', async(req,res) => {
