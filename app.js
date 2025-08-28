@@ -1,5 +1,5 @@
 import express from 'express';
-import mariadb from 'mariadb';
+import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
@@ -9,7 +9,7 @@ import { Filter } from 'bad-words';
 
 dotenv.config();
 
-const pool = mariadb.createPool({
+const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
