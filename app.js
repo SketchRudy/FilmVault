@@ -27,6 +27,10 @@ async function connect() {
     }
 }
 
+app.get('/health', (req, res) => res.json({ ok: true }));
+app.get('/', (req, res) => res.send('FilmVault API is alive'));
+
+
 const app = express();
 app.use(session({
     secret: process.env.SESSION_SECRET || 'dev-secret',
