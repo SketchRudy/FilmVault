@@ -91,7 +91,7 @@ app.post('/register', async (req, res) => {
     try {
         connection = await connect();
 
-        const existingUser = await connection.query(
+        const [existingUser] = await connection.query(
             `SELECT  * FROM  users WHERE username = ?`,[username]
         );
 
@@ -134,18 +134,18 @@ app.post('/login', async(req,res) => {
 
     try {
         const connection = await connect();
-        const result = await connection.query(
+        const [rows] = await connection.query(
             `SELECT * FROM users WHERE username = ?`,
             [username]
         );
         connection.release();
 
-        if (result.length === 0) {
+        if (rows.length === 0) {
             return res.render('login', { error: 'User not found.' });
         }
 
-        const user = result[0];
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const user = rows[0];
+        const passwordMatch = await bcrypt.compare(password, String(user.password));
 
         if (!passwordMatch) {
             return res.render('login', { error: 'Incorrect Password.' });
