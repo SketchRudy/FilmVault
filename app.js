@@ -35,7 +35,11 @@ app.set('trust proxy', 1); // Railway/any proxy
 app.use(session({
     secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    }
 }));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
@@ -53,9 +57,11 @@ app.get('/', async(req,res) => {
     let movies = [];
 
     if (req.session.userID) {
-        movies = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
+        const[rows] = await connection.query(`SELECT * FROM movieLog WHERE userID = ?`, [req.session.userID]);
+        movies = rows;
     } else {
-        movies = await connection.query(`SELECT * FROM movieLog`)
+        const[rows] = await connection.query(`SELECT * FROM movieLog`);
+        movies = rows;
     }
 
     const groupedMovies = {};
@@ -155,7 +161,8 @@ app.post('/login', async(req,res) => {
         req.session.username = user.username;
 
         console.log(`Logged in as ${user.username}`);
-        res.redirect('/');
+        req.session.save(() => res.redirect('/'));
+        return;
     } catch (err) {
         console.error("Login Error:", err);
         res.send("Something went wrong during login")
@@ -175,11 +182,18 @@ app.get('/logout', (req, res) => {
 
 app.get('/addMovie', (req,res) => {
     if (!req.session.userID) {
+    return res.status(401).send('Please log in to add a movie.');
+  }
+    if (!req.session.userID) {
         return res.redirect('/login');
     }
     res.render('addMovie');
 });
 app.post('/submit-movie', async(req,res) => {
+    if (!req.session.userID) {
+        return res.status(401).send('Please log in to add a movie.');
+    }
+
     const filter = new Filter();
 
     const newMovie = {
@@ -219,13 +233,13 @@ app.get('/search', async (req,res) => {
     let movies = [];
 
     if (req.session.userID) {
-        movies = await connection.query(
+        const [movies] = await connection.query(
             `SELECT * FROM movieLog WHERE userID = ? AND LOWER(title) LIKE LOWER(?)`,
             [req.session.userID, `%${search}%`] // will match any title containing the search term within it
           );
     } else {
         // If not logged in, show no movies 
-        movies = await connection.query(
+        const [movies] = await connection.query(
             `SELECT * FROM movieLog WHERE LOWER(title) LIKE LOWER(?)`,
             [`%${search}%`]
         );
@@ -252,7 +266,7 @@ app.get('/search', async (req,res) => {
 app.get('/edit/:id', async (req, res) => {
     const movieID = req.params.id // Access' route parameters
     const connection = await connect();
-    const result = await connection.query(
+    const [result] = await connection.query(
         `SELECT * FROM movieLog WHERE movielogID = ?`,
         [movieID]
     );
