@@ -228,21 +228,23 @@ app.post('/submit-movie', async(req,res) => {
 });
 
 app.get('/search', async (req,res) => {
-    const search = req.query.search || '';    
+    const search = (req.query.search || '').trim();    
     const connection = await connect();
     let movies = [];
 
     if (req.session.userID) {
-        const [movies] = await connection.query(
-            `SELECT * FROM movieLog WHERE userID = ? AND LOWER(title) LIKE LOWER(?)`,
-            [req.session.userID, `%${search}%`] // will match any title containing the search term within it
+        const [rows] = await connection.query(
+            `SELECT * FROM movieLog WHERE userID = ? AND title LIKE CONCAT("%", ?, "%")`,
+            [req.session.userID, search] // will match any title containing the search term within it
           );
+          movies = rows;
     } else {
         // If not logged in, show no movies 
-        const [movies] = await connection.query(
-            `SELECT * FROM movieLog WHERE LOWER(title) LIKE LOWER(?)`,
-            [`%${search}%`]
+        const [rows] = await connection.query(
+            `SELECT * FROM movieLog WHERE title LIKE CONCAT("%", ?, "%")`,
+            [search]
         );
+        movies = rows
     }
 
     const groupedMovies = {};
