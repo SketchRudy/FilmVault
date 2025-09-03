@@ -250,11 +250,30 @@ header h1 a:hover {
   background: transparent;
   border: 1px solid #e50914; border-radius: 4px;
 }
-.movie-entry .movie-meta .button.button-delete i { color:#e50914; }
-.movie-entry .movie-meta .button.button-delete:hover i { transform:scale(1.05); color:#ff3d3d; }
+.movie-entry .button.button-delete{
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;   /* was background */
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: background-color .15s ease, opacity .15s ease, transform .15s ease;
+}
+
+.movie-entry .button.button-delete:hover{
+  background-color: #2a2a2a;       /* animates cleanly now */
+  opacity: 1;
+}
 
 
-  
 
 footer {
     text-align: center;
