@@ -51,20 +51,6 @@ const app = express();
 app.get('/health', (req, res) => res.json({ ok: true }));
 app.set('trust proxy', 1); // Railway/any proxy
 app.use(express.static('public'));
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'dev-secret',
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 24 * 7
-    }
-}));
-app.use(express.urlencoded({extended:true}));
-app.set('view engine','ejs');
-const PORT = process.env.PORT || 7000;
 
 /*
  * 
@@ -145,6 +131,25 @@ app.get('/poster', async (req, res) => {
  * 
  * 
  */
+
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'dev-secret',
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        disableTouch: true  
+    }
+}));
+app.use(express.urlencoded({extended:true}));
+app.set('view engine','ejs');
+const PORT = process.env.PORT || 7000;
+
+
 // Show /intro once per session, then let "/" render normally
 app.get('/', (req, res, next) => {
   if (!req.session.introSeen) {
