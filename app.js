@@ -298,9 +298,6 @@ app.get('/logout', (req, res) => {
 
 app.get('/addMovie', (req,res) => {
     if (!req.session.userID) {
-    return res.status(401).send('Please log in to add a movie.');
-  }
-    if (!req.session.userID) {
         return res.redirect('/login');
     }
     res.render('addMovie');
