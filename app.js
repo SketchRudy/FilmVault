@@ -52,73 +52,76 @@ const PORT = process.env.PORT || 7000;
  * 
  * 
  */
-// --- poster proxy (robust v3/v4 + retry) ---
+// --- poster proxy (supports v3 or v4 key) ---
 const fetchAny = typeof fetch === 'function'
   ? fetch
   : (...args) => import('node-fetch').then(({ default: f }) => f(...args));
 
 const posterCache = new Map();
-const POSTER_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+const POSTER_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 const FALLBACK = '/images/placeholder.png';
 
 app.get('/poster', async (req, res) => {
-  const title = String(req.query.title || '').trim();
-  const year  = String(req.query.year  || '').trim();
-  if (!title) return res.redirect(FALLBACK);
-
-  const TMDB_KEY = process.env.TMDB_API_KEY || '';
-  const isV4 = TMDB_KEY.startsWith('eyJ'); // v4 tokens look like JWT
-
-  // cache
-  const key = (title + '|' + year).toLowerCase();
-  const hit = posterCache.get(key);
-  if (hit && hit.exp > Date.now()) return res.redirect(hit.url);
-
-  // helper to call TMDB
-  async function search({ useYear, usePrimaryYear }) {
-    const url = new URL('https://api.themoviedb.org/3/search/movie');
-    url.searchParams.set('query', title);
-    url.searchParams.set('include_adult', 'false');
-    url.searchParams.set('language', 'en-US');
-    if (useYear && year) url.searchParams.set('year', year);
-    if (usePrimaryYear && year) url.searchParams.set('primary_release_year', year);
-
-    const opts = {};
-    if (isV4) opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
-    else url.searchParams.set('api_key', TMDB_KEY); // v3
-
-    const resp = await fetchAny(url, opts);
-    if (!resp.ok) {
-      const txt = await resp.text().catch(()=> '');
-      console.error('[poster] TMDB error', resp.status, txt.slice(0,200));
-      return null;
-    }
-    const data = await resp.json();
-    return Array.isArray(data?.results) ? data.results : [];
-  }
-
   try {
-    // try with year -> with primary_release_year -> without year
-    let results = await search({ useYear: true });
-    if (!results || results.length === 0) {
-      results = await search({ useYear: false, usePrimaryYear: true });
-    }
-    if (!results || results.length === 0) {
-      results = await search({ useYear: false, usePrimaryYear: false });
+    const title = String(req.query.title || '').trim();
+    const year  = String(req.query.year  || '').trim();
+
+    if (!title) return res.redirect(FALLBACK);
+
+    const TMDB_KEY = process.env.TMDB_API_KEY || '';
+    const isV4 = TMDB_KEY.startsWith('eyJ'); // v4 tokens look like a JWT
+
+    // simple cache
+    const key = (title + '|' + year).toLowerCase();
+    const hit = posterCache.get(key);
+    if (hit && hit.exp > Date.now()) return res.redirect(hit.url);
+
+    // helper: one TMDB search attempt
+    const searchOnce = async (params = {}) => {
+      const url = new URL('https://api.themoviedb.org/3/search/movie');
+      url.searchParams.set('query', title);
+      url.searchParams.set('include_adult', 'false');
+      url.searchParams.set('language', 'en-US');
+      if (params.year) url.searchParams.set('year', params.year);
+      if (params.primary_release_year) url.searchParams.set('primary_release_year', params.primary_release_year);
+
+      const opts = {};
+      if (isV4) {
+        opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
+      } else {
+        url.searchParams.set('api_key', TMDB_KEY); // v3 key
+      }
+
+      const r = await fetchAny(url, opts);
+      if (!r.ok) {
+        const txt = await r.text().catch(() => '');
+        console.error('[poster] TMDB error', r.status, txt.slice(0, 200));
+        return [];
+      }
+      const j = await r.json();
+      return Array.isArray(j.results) ? j.results : [];
+    };
+
+    // try: with year -> with primary_release_year -> no year
+    let results = await searchOnce({ year });
+    if (!results.length && year) results = await searchOnce({ primary_release_year: year });
+    if (!results.length) results = await searchOnce();
+
+    let imgUrl = FALLBACK;
+    if (results.length) {
+      const best = results.find(m => m && m.poster_path) || results[0];
+      if (best && best.poster_path) {
+        imgUrl = `https://image.tmdb.org/t/p/w342${best.poster_path}`;
+      }
     }
 
-    if (!results || results.length === 0) {
-      console.warn('[poster] 0 results for', title, year);
-      posterCache.set(key, { url: FALLBACK, exp: Date.now() + POSTER_TTL_MS });
-      return res.redirect(FALLBACK);
-    }
-
-    // pick best result with a poster
-    const best = results.find(m => m && m.poster_path) || results[0];
-    const imgUrl = best?.poster_path
-      ? `https://image.tmdb.org/t/p/w342${best.poster_path}`
-      : FALLBACK;
-
+    posterCache.set(key, { url: imgUrl, exp: Date.now() + POSTER_TTL_MS });
+    return res.redirect(imgUrl);
+  } catch (err) {
+    console.error('[poster] exception', err);
+    return res.redirect(FALLBACK);
+  }
+});
 /**
  * 
  * 
