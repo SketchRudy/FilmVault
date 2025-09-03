@@ -3,6 +3,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
+import mySQLStoreFactory from 'express-mysql-session';
 import { validateForm } from './public/scripts/server-validation.js';
 import { Filter } from 'bad-words';
 
@@ -32,6 +33,17 @@ async function connect() {
         throw err;
     }
 }
+
+const MySQLStore = MySQLStoreFactory(session);
+
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  createDatabaseTable: true, // auto-create sessions table
+});
 
 const app = express();
 app.get('/health', (req, res) => res.json({ ok: true }));
