@@ -229,49 +229,37 @@ header h1 a:hover {
     color: #ff3d3d;
 }
 
-
-
-
-/* lay out poster | text, keep yours if already done */
-.movie-entry { display: grid; grid-template-columns: 120px 1fr; gap: 16px; }
-
-/* neat vertical rhythm in the text */
-.movie-meta { display: flex; flex-direction: column; gap: .35rem; }
-
-/* put Edit + Delete on one row under the text */
-.movie-meta .button-edit { align-self: flex-start; margin-top: .5rem; }
-
-/* override the old absolute trash button */
-.movie-entry .movie-meta .button.button-delete{
-  position: static !important;
-  margin-top: .5rem;
-  margin-left: .5rem;
-  padding: .45rem .6rem;
-  background: transparent;
-  border: 1px solid #e50914; border-radius: 4px;
+.movie-entry {        /* you already have this */
+  position: relative;
+  background-color: #1f1f1f;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
-.movie-entry .button.button-delete{
-  position: absolute !important;
+
+/* original floating delete */
+.button.button-delete {
+  position: absolute;
   top: 10px;
   right: 10px;
-  background-color: transparent;   /* was background */
+  background: transparent;
   border: none;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
   cursor: pointer;
-  opacity: 0.85;
-  transition: background-color .15s ease, opacity .15s ease, transform .15s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
+  padding: 0.5rem;
 }
 
-.movie-entry .button.button-delete:hover{
-  background-color: #2a2a2a;       /* animates cleanly now */
-  opacity: 1;
+.button.button-delete i {
+  font-size: 1.5em;
+  color: #e50914;
+  transition: color 0.2s ease;
 }
+
+.button.button-delete:hover i {
+  transform: scale(1.1);
+  color: #ff3d3d;
+}
+
 
 
 
