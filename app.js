@@ -42,12 +42,15 @@ const sessionStore = new MySQLStore({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  createDatabaseTable: true,     
+  createDatabaseTable: true,
+  checkExpirationInterval: 1000 * 60 * 60,
+  expiration: 1000 * 60 * 60 * 24 * 7 
 });
 
 const app = express();
 app.get('/health', (req, res) => res.json({ ok: true }));
 app.set('trust proxy', 1); // Railway/any proxy
+app.use(express.static('public'));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
@@ -55,12 +58,12 @@ app.use(session({
     store: sessionStore,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
-app.use(express.static('public'));
 const PORT = process.env.PORT || 7000;
 
 /*
