@@ -129,6 +129,17 @@ app.get('/poster', async (req, res) => {
  * 
  * 
  */
+// Show /intro once per session, then let "/" render normally
+app.get('/', (req, res, next) => {
+  if (!req.session.introSeen) {
+    req.session.introSeen = true;     // mark before redirect
+    return res.redirect('/intro');
+  }
+  next();
+});
+
+
+
 app.get('/', async(req,res) => {
 
     // Logged in users will see their own movies

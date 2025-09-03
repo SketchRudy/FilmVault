@@ -11,10 +11,7 @@
     (function () {
       try {
         if (
-          sessionStorage.getItem('seenIntro') === 'yes' ||
-          localStorage.getItem('fv_intro_skip') === '1'
-        ) {
-          // If your “home” is '/', keep '/'. If it's '/home' or '/vault', use that.
+          sessionStorage.getItem('seenIntro') === 'yes' ) {
           location.replace('/'); 
         }
       } catch (_) {}
@@ -35,24 +32,12 @@
       </section>
 
       <script>
-    async function enterVault() {
-      const section = document.querySelector('.vault-intro');
-      section.classList.add('fade-out');
-      sessionStorage.setItem('seenIntro', 'yes');
-
-      // Persist across visits if the user wants
-      if (document.getElementById('skipForever').checked) {
-        localStorage.setItem('fv_intro_skip', '1');
-        // Optional cookie for server-side gating (see step 2)
-        try { await fetch('/intro/seen', { method: 'POST' }); } catch (_) {}
-      }
-
-      // Use replace so the intro isn’t in the back stack
-      setTimeout(() => {
-        location.replace('/home'); // or '/'
-      }, 600);
-    }
-  </script>
+  function enterVault() {
+    try { sessionStorage.setItem('seenIntro', 'yes'); } catch (_){}
+    document.querySelector('.vault-intro')?.classList.add('fade-out'); // optional
+    setTimeout(() => { location.replace('/'); }, 400); // was '/home'
+  }
+</script>
       
 
 </body>

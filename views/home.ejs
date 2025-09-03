@@ -11,14 +11,6 @@
     <script src="/scripts/modal.js" defer></script>
   </head>
 <body>
-    <!-- Redirect users to the intro page (once per tab/session)-->
-    <script defer>
-      if (!sessionStorage.getItem('seenIntro')) {
-        sessionStorage.setItem('seenIntro', 'yes');
-        window.location.href = "/intro";
-      }
-    </script>
-
     <header>
         <h1><a href="/">🎬 FilmVault</a></h1>
         <p>Manage your favorite movies in one place</p>
