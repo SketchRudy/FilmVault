@@ -52,72 +52,72 @@ const PORT = process.env.PORT || 7000;
  * 
  * 
  */
-// --- poster proxy (v3 or v4) ---
-import 'dotenv/config'; // ensure env is loaded at app start
-
+// --- poster proxy (robust v3/v4 + retry) ---
 const fetchAny = typeof fetch === 'function'
   ? fetch
   : (...args) => import('node-fetch').then(({ default: f }) => f(...args));
 
 const posterCache = new Map();
 const POSTER_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+const FALLBACK = '/images/placeholder.png';
 
 app.get('/poster', async (req, res) => {
   const title = String(req.query.title || '').trim();
   const year  = String(req.query.year  || '').trim();
-  const FALLBACK = '/images/placeholder.png';
-
   if (!title) return res.redirect(FALLBACK);
 
   const TMDB_KEY = process.env.TMDB_API_KEY || '';
-  if (!TMDB_KEY) {
-    console.error('[poster] Missing TMDB_API_KEY');
-    return res.redirect(FALLBACK);
-  }
-  const isV4 = TMDB_KEY.startsWith('eyJ'); // v4 tokens look like a JWT
+  const isV4 = TMDB_KEY.startsWith('eyJ'); // v4 tokens look like JWT
 
+  // cache
   const key = (title + '|' + year).toLowerCase();
   const hit = posterCache.get(key);
   if (hit && hit.exp > Date.now()) return res.redirect(hit.url);
 
-  try {
+  // helper to call TMDB
+  async function search({ useYear, usePrimaryYear }) {
     const url = new URL('https://api.themoviedb.org/3/search/movie');
     url.searchParams.set('query', title);
-    if (year) url.searchParams.set('year', year);
     url.searchParams.set('include_adult', 'false');
     url.searchParams.set('language', 'en-US');
+    if (useYear && year) url.searchParams.set('year', year);
+    if (usePrimaryYear && year) url.searchParams.set('primary_release_year', year);
 
     const opts = {};
-    if (isV4) {
-      opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
-    } else {
-      url.searchParams.set('api_key', TMDB_KEY); // v3 key support
-    }
+    if (isV4) opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
+    else url.searchParams.set('api_key', TMDB_KEY); // v3
 
     const resp = await fetchAny(url, opts);
     if (!resp.ok) {
-      const txt = await resp.text().catch(() => '');
+      const txt = await resp.text().catch(()=> '');
       console.error('[poster] TMDB error', resp.status, txt.slice(0,200));
+      return null;
+    }
+    const data = await resp.json();
+    return Array.isArray(data?.results) ? data.results : [];
+  }
+
+  try {
+    // try with year -> with primary_release_year -> without year
+    let results = await search({ useYear: true });
+    if (!results || results.length === 0) {
+      results = await search({ useYear: false, usePrimaryYear: true });
+    }
+    if (!results || results.length === 0) {
+      results = await search({ useYear: false, usePrimaryYear: false });
+    }
+
+    if (!results || results.length === 0) {
+      console.warn('[poster] 0 results for', title, year);
+      posterCache.set(key, { url: FALLBACK, exp: Date.now() + POSTER_TTL_MS });
       return res.redirect(FALLBACK);
     }
 
-    const data = await resp.json();
-    const results = Array.isArray(data?.results) ? data.results : [];
-    const best = results.find(m => m && m.poster_path) || null;
-
-    const imgUrl = best
+    // pick best result with a poster
+    const best = results.find(m => m && m.poster_path) || results[0];
+    const imgUrl = best?.poster_path
       ? `https://image.tmdb.org/t/p/w342${best.poster_path}`
       : FALLBACK;
-
-    posterCache.set(key, { url: imgUrl, exp: Date.now() + POSTER_TTL_MS });
-    return res.redirect(imgUrl);
-  } catch (e) {
-    console.error('[poster] exception', e);
-    return res.redirect(FALLBACK);
-  }
-});
-
-
 
 /**
  * 
