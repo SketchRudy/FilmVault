@@ -6,6 +6,20 @@
     <title>Film Vault</title>
     <link rel="stylesheet" href="/styles/intro.css">
     <link rel="icon" href="/images/favicon.png">
+
+    <script>
+    (function () {
+      try {
+        if (
+          sessionStorage.getItem('seenIntro') === 'yes' ||
+          localStorage.getItem('fv_intro_skip') === '1'
+        ) {
+          // If your “home” is '/', keep '/'. If it's '/home' or '/vault', use that.
+          location.replace('/home'); 
+        }
+      } catch (_) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -21,18 +35,24 @@
       </section>
 
       <script>
-        function enterVault() {
-          const section = document.querySelector('.vault-intro');
-          section.classList.add('fade-out');
-          sessionStorage.setItem('seenIntro', 'yes');
+    async function enterVault() {
+      const section = document.querySelector('.vault-intro');
+      section.classList.add('fade-out');
+      sessionStorage.setItem('seenIntro', 'yes');
 
-          // Redirects after a fade animation finishes (set to 600ms)
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 600);
-        }
+      // Persist across visits if the user wants
+      if (document.getElementById('skipForever').checked) {
+        localStorage.setItem('fv_intro_skip', '1');
+        // Optional cookie for server-side gating (see step 2)
+        try { await fetch('/intro/seen', { method: 'POST' }); } catch (_) {}
+      }
 
-      </script>
+      // Use replace so the intro isn’t in the back stack
+      setTimeout(() => {
+        location.replace('/home'); // or '/'
+      }, 600);
+    }
+  </script>
       
 
 </body>
