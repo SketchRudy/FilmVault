@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
-import mySQLStoreFactory from 'express-mysql-session';
+import mysqlSession from 'express-mysql-session';
 import { validateForm } from './public/scripts/server-validation.js';
 import { Filter } from 'bad-words';
 
@@ -34,7 +34,7 @@ async function connect() {
     }
 }
 
-const MySQLStore = MySQLStoreFactory(session);
+const MySQLStore = mysqlSession(session);
 
 const sessionStore = new MySQLStore({
   host: process.env.DB_HOST,
@@ -42,7 +42,7 @@ const sessionStore = new MySQLStore({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  createDatabaseTable: true, // auto-create sessions table
+  createDatabaseTable: true,     
 });
 
 const app = express();
