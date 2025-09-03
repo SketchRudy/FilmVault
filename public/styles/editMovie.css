@@ -102,3 +102,23 @@ textarea {
     background-color: #2a2a2a; /* swap background-color with color to have form inputs be white and text to be black*/
     color: white;
 }
+
+
+/* keep poster + text layout as-is */
+.movie-meta { display: flex; flex-direction: column; gap: .35rem; }
+
+/* show Edit + Delete on one row under the text */
+.movie-meta .button-edit { align-self: flex-start; margin-top: .5rem; }
+
+/* override absolute positioning on the trash button for the list view */
+.movie-entry .movie-meta .button.button-delete {
+  position: static !important;
+  margin-top: .5rem;
+  margin-left: .5rem;
+  padding: .45rem .6rem;
+  background: transparent;
+  border: 1px solid #e50914;
+  border-radius: 4px;
+}
+.movie-entry .movie-meta .button.button-delete i { color: #e50914; }
+.movie-entry .movie-meta .button.button-delete:hover i { transform: scale(1.05); color: #ff3d3d; }
