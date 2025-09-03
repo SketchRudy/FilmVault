@@ -52,6 +52,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
     saveUninitialized: false,
+    store: sessionStore,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
