@@ -52,7 +52,7 @@ const PORT = process.env.PORT || 7000;
  * 
  * 
  */
-// --- poster proxy (supports v3 or v4 key) ---
+// --- poster proxy (v3/v4, retry, no caching on fallback, refresh support) ---
 const fetchAny = typeof fetch === 'function'
   ? fetch
   : (...args) => import('node-fetch').then(({ default: f }) => f(...args));
@@ -65,18 +65,16 @@ app.get('/poster', async (req, res) => {
   try {
     const title = String(req.query.title || '').trim();
     const year  = String(req.query.year  || '').trim();
-
+    const ignoreCache = req.query.refresh === '1';   // <-- force refresh
     if (!title) return res.redirect(FALLBACK);
 
-    const TMDB_KEY = process.env.TMDB_API_KEY || '';
+    const TMDB_KEY = (process.env.TMDB_API_KEY || '').trim();
     const isV4 = TMDB_KEY.startsWith('eyJ'); // v4 tokens look like a JWT
 
-    // simple cache
     const key = (title + '|' + year).toLowerCase();
     const hit = posterCache.get(key);
-    if (hit && hit.exp > Date.now()) return res.redirect(hit.url);
+    if (!ignoreCache && hit && hit.exp > Date.now()) return res.redirect(hit.url);
 
-    // helper: one TMDB search attempt
     const searchOnce = async (params = {}) => {
       const url = new URL('https://api.themoviedb.org/3/search/movie');
       url.searchParams.set('query', title);
@@ -86,42 +84,40 @@ app.get('/poster', async (req, res) => {
       if (params.primary_release_year) url.searchParams.set('primary_release_year', params.primary_release_year);
 
       const opts = {};
-      if (isV4) {
-        opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
-      } else {
-        url.searchParams.set('api_key', TMDB_KEY); // v3 key
-      }
+      if (isV4) opts.headers = { Authorization: `Bearer ${TMDB_KEY}` };
+      else url.searchParams.set('api_key', TMDB_KEY); // v3
 
       const r = await fetchAny(url, opts);
       if (!r.ok) {
         const txt = await r.text().catch(() => '');
-        console.error('[poster] TMDB error', r.status, txt.slice(0, 200));
+        console.error('[poster] TMDB', r.status, txt.slice(0,200));
         return [];
       }
       const j = await r.json();
       return Array.isArray(j.results) ? j.results : [];
     };
 
-    // try: with year -> with primary_release_year -> no year
+    // try: with year -> with primary_release_year -> without year
     let results = await searchOnce({ year });
     if (!results.length && year) results = await searchOnce({ primary_release_year: year });
     if (!results.length) results = await searchOnce();
 
     let imgUrl = FALLBACK;
-    if (results.length) {
-      const best = results.find(m => m && m.poster_path) || results[0];
-      if (best && best.poster_path) {
-        imgUrl = `https://image.tmdb.org/t/p/w342${best.poster_path}`;
-      }
+    const best = results.find(m => m?.poster_path) || results[0];
+    if (best?.poster_path) imgUrl = `https://image.tmdb.org/t/p/w342${best.poster_path}`;
+
+    // ✅ only cache successful poster URLs (never cache the fallback)
+    if (imgUrl !== FALLBACK) {
+      posterCache.set(key, { url: imgUrl, exp: Date.now() + POSTER_TTL_MS });
     }
 
-    posterCache.set(key, { url: imgUrl, exp: Date.now() + POSTER_TTL_MS });
     return res.redirect(imgUrl);
   } catch (err) {
     console.error('[poster] exception', err);
     return res.redirect(FALLBACK);
   }
 });
+
 /**
  * 
  * 
