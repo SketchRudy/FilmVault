@@ -9,6 +9,10 @@ import { Filter } from 'bad-words';
 
 dotenv.config();
 
+const _k = (process.env.TMDB_API_KEY || '').trim();
+console.log('[boot] TMDB present?', !!_k, 'mode=', _k.startsWith('eyJ') ? 'v4' : (_k ? 'v3' : 'missing'), 'len=', _k.length);
+
+
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
