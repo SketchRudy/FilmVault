@@ -143,12 +143,17 @@ header h1 a:hover {
 }
 
 .movie-entry {
-    position: relative;
-    background-color: #1f1f1f;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 120px 1fr; /* poster | text */
+    gap: 16px;
+    align-items: start;
 }
+
+.movie-meta h1 { margin: 0 0 .25rem; }
+.movie-meta hr { margin: .5rem 0; border: 0; height: 1px; background: #333; opacity: .5; }
+
+/* long titles don’t overflow */
+.movie-title { word-wrap: break-word; overflow-wrap: anywhere; }
 
 .movie-poster {
   width: 120px;            /* keep a 2:3 look */
@@ -222,4 +227,10 @@ footer {
     color: #888;
     background-color: #1f1f1f;
     border-top: 4px solid #e50914;
+}
+
+/* stack on narrow screens */
+@media (max-width: 520px) {
+  .movie-entry { grid-template-columns: 1fr; }
+  .movie-poster { width: 100%; max-width: 240px; }
 }

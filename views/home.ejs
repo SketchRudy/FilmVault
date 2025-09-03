@@ -58,7 +58,7 @@
         </section>
 
         <section class="add-movie-section">
-            <a href="/addMovie"><button>Add Movie</button></a>
+            <a href="/addMovie" class="button button-cta">Add Movie</a>
         </section>
 
         <section class="movie-list">
@@ -82,8 +82,8 @@
                       alt="Poster for <%= movie.title %>"
                       loading="lazy"
                     />
+                    <div class="movie-meta">
                     <h1><%= movie.title %> - <%= movie.year %></h1>
-
                     <h3 class="movie-rating"><%- renderStars(movie.rating) %> (<%= movie.rating %>/5)</h3>
                     <h4><%= movie.director %></h4>
                     <hr>
@@ -95,6 +95,7 @@
                     </button>
                     <% } %>
                   </div>
+                </div>
                 <% }) %>
               </div>
             <% } %>
