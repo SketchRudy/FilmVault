@@ -44,7 +44,8 @@ const sessionStore = new MySQLStore({
   database: process.env.DB_DATABASE,
   createDatabaseTable: true,
   checkExpirationInterval: 1000 * 60 * 60,
-  expiration: 1000 * 60 * 60 * 24 * 7 
+  expiration: 1000 * 60 * 60 * 24 * 7,
+  disableTouch: true  
 });
 
 const app = express();
@@ -141,8 +142,7 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        disableTouch: true  
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
 app.use(express.urlencoded({extended:true}));
