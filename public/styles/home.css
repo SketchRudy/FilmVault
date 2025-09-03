@@ -88,6 +88,17 @@ main {
     outline: none;
 }
 
+.button-cta {
+  margin-left: 0;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.add-movie-section .button-cta:hover,
+.add-movie-section .button-cta:focus {
+  background-color: #ff3d3d;
+}
+
 header h1 a {
     text-decoration: none;
     color: inherit; 
