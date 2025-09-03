@@ -45,6 +45,68 @@ app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
 const PORT = process.env.PORT || 7000;
+
+/*
+ * 
+ * 
+ * 
+ * 
+ */
+// --- Poster proxy (zero-migration) ---
+/**
+ * Minimal fetch shim: uses built-in fetch on Node 18+, falls back to node-fetch if needed.
+ */
+const fetchAny = typeof fetch === 'function'
+  ? fetch
+  : (...args) => import('node-fetch').then(({ default: f }) => f(...args));
+
+/** super simple in-memory cache */
+const posterCache = new Map();
+const POSTER_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+app.get('/poster', async (req, res) => {
+  const title = String(req.query.title || '').trim();
+  const year  = String(req.query.year  || '').trim();
+
+  // nice fallback if no title or errors
+  const FALLBACK = '/images/placeholder.png';
+  if (!title) return res.redirect(FALLBACK);
+
+  const key = (title + '|' + year).toLowerCase();
+  const hit = posterCache.get(key);
+  if (hit && hit.exp > Date.now()) return res.redirect(hit.url);
+
+  try {
+    const url = new URL('https://api.themoviedb.org/3/search/movie');
+    url.searchParams.set('query', title);
+    if (year) url.searchParams.set('year', year);
+    url.searchParams.set('include_adult', 'false');
+
+    const resp = await fetchAny(url, {
+      headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` }
+    });
+    const data = await resp.json();
+
+    const best = (data?.results || []).find(m => m.poster_path) || null;
+    const imgUrl = best
+      ? `https://image.tmdb.org/t/p/w342${best.poster_path}`
+      : FALLBACK;
+
+    posterCache.set(key, { url: imgUrl, exp: Date.now() + POSTER_TTL_MS });
+    return res.redirect(imgUrl);
+  } catch {
+    return res.redirect(FALLBACK);
+  }
+});
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 app.get('/', async(req,res) => {
 
     // Logged in users will see their own movies

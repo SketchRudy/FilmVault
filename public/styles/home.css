@@ -150,6 +150,14 @@ header h1 a:hover {
     border-radius: 5px;
 }
 
+.movie-poster {
+  width: 120px;            /* keep a 2:3 look */
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #111;        /* avoids layout jump while loading */
+}
+
 .modal {
     display: none;           
     position: fixed;

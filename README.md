@@ -1,6 +1,6 @@
 # 🎬 FilmVault
 
-**A full-stack movie manager app built with Node.js, Express, and MariaDB.**  
+**A full-stack movie manager app built with Node.js, Express, and MySQL.**  
 View the live site here: 👉 [https://filmvault.site](https://filmvault.site)
 
 ---
@@ -15,8 +15,7 @@ View the live site here: 👉 [https://filmvault.site](https://filmvault.site)
 ## Tech Stack
 **Frontend:** HTML, CSS, JavaScript  
 **Backend:** Node.js, Express  
-**Database:** MariaDB  
-**Cloud:** Google Cloud Platform (GCP)  
+**Database:** MySQL  
 **Version Control:** Git
 
 ## 📸 Screenshots

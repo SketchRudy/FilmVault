@@ -76,6 +76,12 @@
                 </h2>
                 <% groupedMovies[genre].forEach(movie => { %>
                   <div class="movie-entry" id="movie-<%= movie.movielogID %>">
+                    <img
+                      class="movie-poster"
+                      src="/poster?title=<%= encodeURIComponent(movie.title) %>&year=<%= movie.year || '' %>"
+                      alt="Poster for <%= movie.title %>"
+                      loading="lazy"
+                    />
                     <h1><%= movie.title %> - <%= movie.year %></h1>
 
                     <h3 class="movie-rating"><%- renderStars(movie.rating) %> (<%= movie.rating %>/5)</h3>
