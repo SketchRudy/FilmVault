@@ -229,6 +229,31 @@ header h1 a:hover {
     color: #ff3d3d;
 }
 
+
+
+
+/* lay out poster | text, keep yours if already done */
+.movie-entry { display: grid; grid-template-columns: 120px 1fr; gap: 16px; }
+
+/* neat vertical rhythm in the text */
+.movie-meta { display: flex; flex-direction: column; gap: .35rem; }
+
+/* put Edit + Delete on one row under the text */
+.movie-meta .button-edit { align-self: flex-start; margin-top: .5rem; }
+
+/* override the old absolute trash button */
+.movie-entry .movie-meta .button.button-delete{
+  position: static !important;
+  margin-top: .5rem;
+  margin-left: .5rem;
+  padding: .45rem .6rem;
+  background: transparent;
+  border: 1px solid #e50914; border-radius: 4px;
+}
+.movie-entry .movie-meta .button.button-delete i { color:#e50914; }
+.movie-entry .movie-meta .button.button-delete:hover i { transform:scale(1.05); color:#ff3d3d; }
+
+
   
 
 footer {
@@ -239,7 +264,6 @@ footer {
     background-color: #1f1f1f;
     border-top: 4px solid #e50914;
 }
-
 /* stack on narrow screens */
 @media (max-width: 520px) {
   .movie-entry { grid-template-columns: 1fr; }
