@@ -10,7 +10,6 @@ View the live site here: 👉 [https://filmvault.site](https://filmvault.site)
 - Search and sort by title, genre, release year, or rating  
 - Backend with RESTful routes for managing movie data  
 - Responsive design for desktop and mobile  
-- Hosted on Google Cloud
 
 ## Tech Stack
 **Frontend:** HTML, CSS, JavaScript  
