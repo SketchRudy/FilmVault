@@ -49,9 +49,8 @@ const sessionStore = new MySQLStore({
 });
 
 const app = express();
-app.get('/health', (req, res) => res.json({ ok: true }));
-app.set('trust proxy', 1); // Railway/any proxy
-app.use(express.static('public'));
+//app.set('trust proxy', 1); // Railway/any proxy
+//app.use(express.static('public'));
 
 
 // trust Railway's edge so req.secure works
@@ -66,12 +65,15 @@ app.use((req, res, next) => {
 
 // (after HTTPS works everywhere, keep HSTS on)
 app.use((req, res, next) => {
-  res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains; preload');
+  res.setHeader('Content-Security-Policy', 'upgrade-insecure-requests; block-all-mixed-content');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   next();
 });
 
 // static AFTER the redirect so assets aren’t served over http
 app.use(express.static('public'));
+app.get('/health', (req, res) => res.json({ ok: true }));
+
 
 /*
  * 
