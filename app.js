@@ -22,6 +22,21 @@ const pool = mysql.createPool({
     port: Number(process.env.DB_PORT || 3306)
 });
 
+async function waitForDB(retries = 10, delay = 3000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const conn = await pool.getConnection();
+            conn.release();
+            console.log('Database ready!');
+            return true;
+        } catch (err) {
+            console.log(`DB not ready, retrying in ${delay/1000}s... (${i+1}/${retries})`);
+            await new Promise(res => setTimeout(res, delay));
+        }
+    }
+    throw new Error('Could not connect to database after retries');
+}
+
 
 async function connect() {
     try {
@@ -466,6 +481,17 @@ app.get('/intro', (req,res) =>{
     res.render('intro');
 })
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running at https://localhost:${PORT}`);
-});
+waitForDB()
+    .then(() => {
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server is running at https://localhost:${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Failed to start server:', err);
+        process.exit(1);
+    });
+
+// app.listen(PORT, '0.0.0.0', () => {
+//     console.log(`Server is running at https://localhost:${PORT}`);
+// });
